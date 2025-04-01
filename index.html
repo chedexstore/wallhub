@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WallHub - Beautiful Wallpapers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f1e8; /* Light beige background */
+            color: #5d4b35; /* Darker brown text for contrast */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: #d9c7a0; /* Medium beige header */
+            color: #5d4b35; /* Dark brown text */
+            padding: 20px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        a {
+            text-decoration: none; /* Remove underline from all links */
+            color: inherit; /* Inherit the color from parent elements */
+        }
+
+        a:hover {
+            color: #8a7053; /* Darker accent color on hover */
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #5d4b35; /* Ensure the color matches your design */
+            transition: color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        .logo:hover {
+            color: #8a7053; /* Darker accent color on hover */
+        }
+
+        .logo span {
+            color: #8a7053; /* Darker accent color */
+            transition: color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        .logo:hover span {
+            color: #6b573e; /* Even darker on hover */
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: #5d4b35; /* Dark brown text */
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #8a7053; /* Darker accent on hover */
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(217, 199, 160, 0.7), rgba(217, 199, 160, 0.7)), url('/api/placeholder/1200/400') center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .search-bar {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            font-size: 16px;
+            background-color: #f8f4eb; /* Very light beige */
+        }
+
+        .search-bar button {
+            padding: 10px 15px;
+            background-color: #8a7053; /* Darker accent color */
+            color: #f8f4eb; /* Very light beige text */
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #6b573e; /* Even darker on hover */
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 50px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .section-title p {
+            color: #8a7053; /* Darker accent color */
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category {
+            padding: 8px 15px;
+            margin: 5px;
+            background-color: #e8e0cf; /* Light beige */
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .category:hover, .category.active {
+            background-color: #8a7053; /* Darker accent color */
+            color: #f8f4eb; /* Very light beige text */
+        }
+
+        .wallpapers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .wallpaper-card {
+            background: #f8f4eb; /* Very light beige */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(93, 75, 53, 0.1);
+        }
+
+        .wallpaper-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .wallpaper-info {
+            padding: 15px;
+        }
+
+        .wallpaper-info h3 {
+            margin-bottom: 5px;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .wallpaper-info p {
+            color: #8a7053; /* Darker accent color */
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .wallpaper-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .download-btn {
+            background-color: #8a7053; /* Darker accent color */
+            color: #f8f4eb; /* Very light beige text */
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .download-btn:hover {
+            background-color: #6b573e; /* Even darker on hover */
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            color: #8a7053; /* Darker accent color */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .like-btn i {
+            margin-right: 5px;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background-color: #f8f4eb; /* Very light beige */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(93, 75, 53, 0.1);
+            padding: 30px;
+            margin: 50px 0;
+        }
+
+        .admin-panel .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logout-btn {
+            background-color: #c28563; /* Warm brown */
+            color: #f8f4eb; /* Very light beige text */
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #a6714e; /* Darker warm brown */
+        }
+
+        .admin-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #d9c7a0; /* Medium beige */
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #f8f4eb; /* Very light beige */
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background-color: #a4bb86; /* Sage green accent */
+            color: #f8f4eb; /* Very light beige text */
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #869b6b; /* Darker sage green */
+        }
+
+        /* Login Form */
+        .login-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #f8f4eb; /* Very light beige */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(93, 75, 53, 0.1);
+            padding: 30px;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+       /* Footer Styles */
+footer {
+    background-color: #d9c7a0; /* Medium beige */
+    color: #5d4b35; /* Dark brown text */
+    padding: 50px 0 20px;
+    border-top: 1px solid #c4b58b; /* Lighter medium beige */
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.footer-column h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #5d4b35; /* Dark brown text */
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+    color: #6b573e; /* Darker brown */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-column ul li a:hover {
+    color: #8a7053; /* Accent color */
+}
+
+.footer-column p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #6b573e; /* Darker brown */
+}
+
+.social-links {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.social-links .social-icon {
+    color: #5d4b35; /* Dark brown text */
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.social-links .social-icon:hover {
+    color: #8a7053; /* Accent color */
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #c4b58b; /* Lighter medium beige */
+    font-size: 14px;
+    color: #6b573e; /* Darker brown */
+}
+
+/* Font Awesome Icons */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(93, 75, 53, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #f8f4eb; /* Very light beige */
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #8a7053; /* Darker accent color */
+        }
+
+        /* Page Sections */
+        .page-section {
+            padding: 50px 0;
+        }
+
+        .page-content {
+            background-color: #f8f4eb; /* Very light beige */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(93, 75, 53, 0.1);
+            padding: 30px;
+        }
+
+        .page-content h2 {
+            margin-bottom: 20px;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .page-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .page-content h3 {
+            color: #6b573e; /* Darker brown */
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        /* FAQ Section */
+        .faq-item {
+            margin-bottom: 20px;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #6b573e; /* Darker brown */
+        }
+
+        .faq-answer {
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        /* Contact Form */
+        .contact-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        /* Search Results */
+        .search-results-info {
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #8a7053; /* Darker accent color */
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none;
+        }
+
+        /* Edit and Delete Buttons */
+        .edit-btn, .delete-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .edit-btn {
+            background-color: #a4bb86; /* Sage green accent */
+            color: #f8f4eb; /* Very light beige text */
+        }
+
+        .edit-btn:hover {
+            background-color: #869b6b; /* Darker sage green */
+        }
+
+        .delete-btn {
+            background-color: #c28563; /* Warm brown */
+            color: #f8f4eb; /* Very light beige text */
+        }
+
+        .delete-btn:hover {
+            background-color: #a6714e; /* Darker warm brown */
+        }
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Reduce space between elements */
+}
+
+/* Admin Login Button */
+.admin-login {
+    font-size: 16px;
+    color: #5d4b35;
+    text-decoration: none;
+    padding: 8px 12px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    white-space: nowrap; /* Prevents line break */
+}
+
+.admin-login:hover {
+    color: #8a7053;
+}
+
+/* Follow Us Text */
+.follow-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #5d4b35;
+}
+
+/* Ensure nav-right and footer social media are consistent */
+.social-icons,
+.social-links {
+    display: flex;
+    list-style: none;
+    gap: 10px; /* Adjust spacing between icons */
+    margin: 0;
+    padding: 0;
+}
+
+/* Icons inside both nav and footer */
+.social-icons a,
+.social-links a {
+    font-size: 20px;
+    color: #5d4b35; /* Dark brown */
+    transition: color 0.3s ease;
+    text-decoration: none;
+}
+
+.social-icons a:hover,
+.social-links a:hover {
+    color: #8a7053; /* Accent color */
+}
+
+/* Admin Login - Removed Border & Separated from Social Media */
+.admin-login {
+    font-size: 16px;
+    color: #5d4b35;
+    text-decoration: none;
+    padding: 8px 12px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    margin-left: 30px; /* Adds space to separate from social icons */
+}
+
+.admin-login:hover {
+    color: #8a7053;
+}
+
+/* Burger Menu */
+.burger-menu {
+    display: none; /* Hidden by default */
+    font-size: 24px;
+    color: #5d4b35;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+/* Dropdown Menu */
+/* Add z-index to header */
+header {
+    z-index: 1001; /* Higher than dropdown menu */
+    position: relative; /* Ensure z-index works */
+}
+
+/* Adjust dropdown menu and overlay */
+/* Ensure dropdown-menu is hidden by default */
+.dropdown-menu {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    right: -300px; /* Hide the menu off-screen */
+    width: 300px;
+    height: 100%;
+    background-color: #f8f4eb; /* Very light beige */
+    box-shadow: -4px 0 6px rgba(93, 75, 53, 0.1);
+    transition: right 0.3s ease; /* Smooth slide-in transition */
+    z-index: 1000;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the left */
+}
+
+/* Show dropdown-menu when active */
+.dropdown-menu.active {
+    display: flex; /* Show the menu */
+    right: 0; /* Slide the menu into view */
+}
+
+/* Style for menu items */
+.dropdown-menu a {
+    display: block; /* Make each item take the full width */
+    padding: 12px 15px;
+    width: 100%; /* Full width for a clean look */
+    text-align: left; /* Align text to the left */
+  
+    font-size: 18px; /* Make text bigger */
+}
+
+/* Remove bottom border from last item */
+.dropdown-menu a:last-child {
+    border-bottom: none;
+}
+
+/* Hover effect */
+.dropdown-menu a:hover {
+    background-color: #e8e0cf; /* Light beige */
+    border-radius: 4px;
+}
+
+/* Overlay styles */
+.overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(93, 75, 53, 0.5); /* Semi-transparent overlay */
+    z-index: 999;
+}
+
+/* Show overlay when active */
+.overlay.active {
+    display: block; /* Show the overlay */
+}
+
+/* Slide main content when menu is open */
+body.menu-open {
+    overflow: hidden; /* Prevent scrolling */
+}
+
+body.menu-open main {
+    transform: translateX(-300px); /* Slide content to the left */
+    transition: transform 0.3s ease;
+}
+
+/* Show burger menu on smaller screens */
+@media (max-width: 768px) {
+    .burger-menu {
+        display: block; /* Show burger menu */
+    }
+
+    .nav-right .follow-text,
+    .nav-right .social-icons,
+    .nav-right .separator,
+    .nav-right .admin-login {
+        display: none; /* Hide other elements on smaller screens */
+    }
+
+    .dropdown-menu.active {
+        display: flex; /* Show dropdown when active */
+    }
+}
+/* Keep hero always visible */
+#home {
+    display: flex !important; /* Override any hidden class */
+}
+
+/* Adjust spacing for content below hero */
+#gallery, #searchResults {
+    padding-top: 20px; /* Reduce top padding since hero is fixed */
+    margin-top: 20px; /* Optional: Add space if needed */
+}
+
+
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo" onclick="showSection('home'); return false;">Wall<span>Hub</span></a>
+
+            <div class="nav-right">
+                <span class="follow-text">Follow us on:</span>
+                <ul class="social-icons">
+                    <li><a href="https://www.facebook.com/chedexsonlinestore" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href="#" target="_blank" title="Threads"><i class="fab fa-threads"></i></a></li>
+                    <li><a href="#" target="_blank" title="Pinterest"><i class="fab fa-pinterest"></i></a></li>
+                    <li><a href="#" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a></li>
+                </ul>
+                <div class="separator"></div>
+                <a href="#" id="adminLink" class="admin-login" onclick="toggleLoginModal()">Admin Login</a>
+                
+                <!-- Burger Menu -->
+               <!-- Burger Menu -->
+<div class="burger-menu" onclick="toggleMenu()">
+    <i class="fas fa-bars"></i> <!-- Burger Icon -->
+</div>
+
+<!-- Slide-In Menu -->
+<div class="dropdown-menu" id="dropdownMenu">
+    <a href="#" onclick="showSection('home')">Home</a>
+    <a href="#" onclick="showSection('about')">About Us</a>
+    <a href="#" onclick="showSection('faq')">FAQ</a>
+    <a href="#" onclick="showSection('contact')">Contact</a>
+    <a href="#" onclick="showSection('terms')">Terms of Use</a>
+    <a href="#" onclick="showSection('privacy')">Privacy Policy</a>
+    <a href="#" onclick="toggleLoginModal()">Admin Login</a>
+</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container hero-content">
+                <h1>Discover Amazing Wallpapers</h1>
+                <p>Enhance your device with our stunning collection of high-quality wallpapers</p>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search wallpapers by title or description...">
+                    <button onclick="searchWallpapers()">Search</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="gallery container">
+            <div class="section-title">
+                <h2>Browse Wallpapers</h2>
+                <p>Find the perfect wallpaper for your device</p>
+            </div>
+            
+            <div class="categories">
+                <div class="category active" onclick="filterWallpapers('all')">All</div>
+                <div class="category" onclick="filterWallpapers('nature')">Nature</div>
+                <div class="category" onclick="filterWallpapers('abstract')">Abstract</div>
+                <div class="category" onclick="filterWallpapers('animals')">Animals</div>
+                <div class="category" onclick="filterWallpapers('space')">Space</div>
+                <div class="category" onclick="filterWallpapers('urban')">Urban</div>
+            </div>
+            
+            <div class="wallpapers-grid" id="wallpapersGrid">
+                <!-- Wallpapers will be dynamically inserted here -->
+            </div>
+        </section>
+        
+        <!-- Search Results -->
+        <section id="searchResults" class="gallery container hidden">
+            <div class="section-title">
+                <h2>Search Results</h2>
+                <p id="searchQuery">Results for: </p>
+            </div>
+            
+            <div class="search-results-info" id="resultsInfo"></div>
+            
+            <div class="wallpapers-grid" id="searchResultsGrid">
+                <!-- Search results will be dynamically inserted here -->
+            </div>
+        </section>
+        
+        <!-- About Us Section -->
+        <section id="about" class="page-section container hidden">
+            <div class="section-title">
+                <h2>About Us</h2>
+                <p>Learn more about WallHub</p>
+            </div>
+            
+            <div class="page-content">
+                <h2>Welcome to WallHub</h2>
+                <p>WallHub is a premier destination for high-quality, beautiful wallpapers for all your devices. Founded in 2023, we've been committed to providing the best wallpaper experience for our users.</p>
+                
+                <p>Our team of curators and designers work tirelessly to bring you stunning visuals that transform your digital devices into personalized works of art. From breathtaking nature scenes to abstract masterpieces, we have something for everyone.</p>
+                
+                <p>At WallHub, we believe that your device's background should reflect your personality and style. That's why we're constantly updating our collection with fresh, high-resolution wallpapers that cater to various tastes and preferences.</p>
+                
+                <p>Our mission is simple: to provide beautiful, high-quality wallpapers that inspire and delight our users every day.</p>
+                
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">Our Team</h3>
+                <p>WallHub is powered by a talented team of designers, developers, and wallpaper enthusiasts who are passionate about creating the best wallpaper experience for our users.</p>
+                
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">Join Our Community</h3>
+                <p>We love hearing from our users! Feel free to reach out to us with any feedback, suggestions, or just to say hello. Join our growing community of wallpaper enthusiasts and let's make your devices look amazing together.</p>
+            </div>
+        </section>
+        
+        <!-- FAQ Section -->
+        <section id="faq" class="page-section container hidden">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Get answers to common questions</p>
+            </div>
+            
+            <div class="page-content">
+                <div class="faq-item">
+                    <div class="faq-question">How do I download wallpapers?</div>
+                    <div class="faq-answer">To download a wallpaper, simply browse our collection, find a wallpaper you like, and click the "Download" button. The wallpaper will be saved to your device in its original high-resolution format.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Are all wallpapers free to download?</div>
+                    <div class="faq-answer">Yes, all wallpapers on WallHub are completely free to download and use for personal purposes.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">What resolution are the wallpapers?</div>
+                    <div class="faq-answer">Our wallpapers come in various resolutions, with many available in 4K (3840x2160) or higher. The specific resolution is listed on each wallpaper's details.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Can I submit my own wallpapers?</div>
+                    <div class="faq-answer">We're not currently accepting public submissions, but we're working on adding this feature in the future. Stay tuned!</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">How often do you add new wallpapers?</div>
+                    <div class="faq-answer">We add new wallpapers to our collection on a weekly basis, so be sure to check back regularly for new content.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Can I use these wallpapers for commercial purposes?</div>
+                    <div class="faq-answer">The wallpapers on WallHub are intended for personal use only. For commercial licensing inquiries, please contact us through our Contact page.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">How do I set a downloaded wallpaper as my background?</div>
+                    <div class="faq-answer">
+                        <p>The process varies depending on your device:</p>
+                        <p>- <strong>Windows:</strong> Right-click the image file and select "Set as desktop background"</p>
+                        <p>- <strong>Mac:</strong> Right-click the image and select "Set Desktop Picture"</p>
+                        <p>- <strong>iOS:</strong> Open the image in Photos, tap the share button, and select "Use as Wallpaper"</p>
+                        <p>- <strong>Android:</strong> Open the image, tap the menu button, and select "Set as wallpaper"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="page-section container hidden">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Get in touch with our team</p>
+            </div>
+            
+            <div class="page-content">
+                <p>Have a question, suggestion, or just want to say hello? We'd love to hear from you! Fill out the form below and our team will get back to you as soon as possible.</p>
+                
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="contactName">Your Name</label>
+                        <input type="text" id="contactName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactEmail">Email Address</label>
+                        <input type="email" id="contactEmail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactSubject">Subject</label>
+                        <input type="text" id="contactSubject" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" rows="5" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+                
+                <div style="margin-top: 30px;">
+                    <h3>Contact Information</h3>
+                    <p>Email: info@wallhub.com</p>
+                    <p>Phone: (555) 123-4567</p>
+                    <p>Address: 123 Wallpaper St, Digital City, DC 12345</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Terms of Use Section -->
+        <section id="terms" class="page-section container hidden">
+            <div class="section-title">
+                <h2>Terms of Use</h2>
+                <p>Please read our terms carefully</p>
+            </div>
+            
+            <div class="page-content">
+                <h3>1. Acceptance of Terms</h3>
+                <p>By accessing and using the WallHub website, you accept and agree to be bound by the terms and provisions of this agreement.</p>
+                
+                <h3>2. Use License</h3>
+                <p>Permission is granted to temporarily download one copy of the materials on WallHub's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.</p>
+                
+                <h3>3. Disclaimer</h3>
+                <p>The materials on WallHub's website are provided on an 'as is' basis. WallHub makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+                
+                <h3>4. Limitations</h3>
+                <p>In no event shall WallHub or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on WallHub's website, even if WallHub or a WallHub authorized representative has been notified orally or in writing of the possibility of such damage.</p>
+                
+                <h3>5. Revisions and Errata</h3>
+                <p>The materials appearing on WallHub's website could include technical, typographical, or photographic errors. WallHub does not warrant that any of the materials on its website are accurate, complete or current. WallHub may make changes to the materials contained on its website at any time without notice.</p>
+                
+                <h3>6. Links</h3>
+                <p>WallHub has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by WallHub of the site. Use of any such linked website is at the user's own risk.</p>
+                
+                <h3>7. Modifications</h3>
+                <p>WallHub may revise these terms of service for its website at any time without notice. By using this website you are agreeing to be bound by the then current version of these terms of service.</p>
+                
+                <h3>8. Governing Law</h3>
+                <p>These terms and conditions are governed by and construed in accordance with the laws and you irrevocably submit to the exclusive jurisdiction of the courts in that location.</p>
+            </div>
+        </section>
+        
+        <!-- Privacy Policy Section -->
+        <section id="privacy" class="page-section container hidden">
+            <div class="section-title">
+                <h2>Privacy Policy</h2>
+                <p>How we handle your data</p>
+            </div>
+            
+            <div class="page-content">
+                <h3>1. Information We Collect</h3>
+                <p>We collect information you provide directly to us, such as when you create an account, update your profile, use interactive features, participate in contests, promotions, or surveys, request customer support, or otherwise communicate with us.</p>
+                
+                <h3>2. How We Use Information</h3>
+                <p>We may use information about you for various purposes, including to provide, maintain, and improve our services, develop new products and services, communicate with you about our services, monitor and analyze trends, usage, and activities, and personalize and improve your experience.</p>
+                
+                <h3>3. Sharing of Information</h3>
+                <p>We may share information about you as follows or as otherwise described in this Privacy Policy: with vendors, consultants, and other service providers who need access to such information to carry out work on our behalf, in response to a request for information if we believe disclosure is in accordance with any applicable law, regulation, or legal process.</p>
+                
+                <h3>4. Data Security</h3>
+                <p>We take reasonable measures to help protect information about you from loss, theft, misuse, and unauthorized access, disclosure, alteration, and destruction.</p>
+                
+                <h3>5. Your Choices</h3>
+                <p>You may update, correct, or delete information about you at any time by logging into your online account. If you wish to delete or deactivate your account, please email us, but note that we may retain certain information as required by law or for legitimate business purposes.</p>
+                
+                <h3>6. Changes to this Policy</h3>
+                <p>We may change this Privacy Policy from time to time. If we make changes, we will notify you by revising the date at the top of the policy and, in some cases, we may provide you with additional notice.</p>
+                
+                <h3>7. Contact Us</h3>
+                <p>If you have any questions about this Privacy Policy, please contact us at privacy@wallhub.com.</p>
+            </div>
+        </section>
+        
+        <!-- Admin Panel -->
+        <section id="admin" class="container hidden">
+            <div class="section-title">
+                <h2>Admin Panel</h2>
+                <p>Upload and manage wallpapers</p>
+            </div>
+            
+            <div class="admin-panel">
+                <div class="admin-header">
+                    <h3>Upload New Wallpaper</h3>
+                    <button class="logout-btn" onclick="logoutAdmin()">Logout</button>
+                </div>
+                
+                <form class="admin-form" id="uploadForm">
+                    <div class="form-group">
+                        <label for="title">Wallpaper Title</label>
+                        <input type="text" id="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="">Select Category</option>
+                            <option value="nature">Nature</option>
+                            <option value="abstract">Abstract</option>
+                            <option value="animals">Animals</option>
+                            <option value="space">Space</option>
+                            <option value="urban">Urban</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resolution">Resolution</label>
+                        <input type="text" id="resolution" placeholder="e.g. 1920x1080" required>
+                    </div>
+                    
+                    <!-- Replace file upload with URL inputs -->
+                    <div class="form-group">
+                        <label for="imageUrl">Image URL</label>
+                        <input type="url" id="imageUrl" placeholder="Enter full image URL" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="coverPhotoUrl">Cover Photo URL</label>
+                        <input type="url" id="coverPhotoUrl" placeholder="Enter cover photo URL" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" required>
+                            <option value="published">Published</option>
+                            <option value="unpublished">Unpublished</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Add Wallpaper</button>
+                </form>
+
+                <!-- Wallpapers List for Admin -->
+                <div class="admin-wallpapers-list">
+                    <h3>Manage Wallpapers</h3>
+                    <div class="wallpapers-grid" id="adminWallpapersGrid">
+                        <!-- Wallpapers will be dynamically inserted here with edit/unpublish options -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleLoginModal()">&times;</span>
+            <h2>Admin Login</h2>
+            <form id="loginForm" class="admin-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Wallpaper Preview Modal -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closePreviewModal()">&times;</span>
+            <h2 id="previewTitle">Wallpaper Title</h2>
+            <img id="previewCoverPhoto" src="" alt="Cover Photo" style="width: 100%; margin: 20px 0;">
+            <p id="previewDesc">Description goes here...</p>
+            <button id="downloadBtn" class="download-btn" style="margin-top: 20px; padding: 12px 20px;">Download Wallpaper</button>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Wallpaper</h2>
+            <form id="editForm" class="admin-form">
+                <input type="hidden" id="editWallpaperId">
+                <div class="form-group">
+                    <label for="editTitle">Wallpaper Title</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editCategory">Category</label>
+                    <select id="editCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="nature">Nature</option>
+                        <option value="abstract">Abstract</option>
+                        <option value="animals">Animals</option>
+                        <option value="space">Space</option>
+                        <option value="urban">Urban</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editResolution">Resolution</label>
+                    <input type="text" id="editResolution" placeholder="e.g. 1920x1080" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editImageUrl">Image URL</label>
+                    <input type="url" id="editImageUrl" placeholder="Enter full image URL" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editCoverPhotoUrl">Cover Photo URL</label>
+                    <input type="url" id="editCoverPhotoUrl" placeholder="Enter cover photo URL" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select id="editStatus" required>
+                        <option value="published">Published</option>
+                        <option value="unpublished">Unpublished</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editDescription">Description</label>
+                    <textarea id="editDescription"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Update Wallpaper</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <!-- About Column -->
+                <div class="footer-column">
+                    <a href="#" onclick="showSection('home')" style="text-decoration: none;">
+                        <h3>Wall<span>Hub</span></h3>
+                    </a>
+                    <p>Discover amazing wallpapers for your devices. High quality, free downloads.</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" target="_blank" title="Threads"><i class="fab fa-threads"></i></a>
+                        <a href="#" target="_blank" title="Pinterest"><i class="fab fa-pinterest"></i></a>
+                        <a href="#" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <!-- Quick Links Column -->
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#" onclick="showSection('home')">Home</a></li>
+                        <li><a href="#" onclick="showSection('about')">About Us</a></li>
+                        <li><a href="#" onclick="showSection('faq')">FAQ</a></li>
+                        <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+                        <li><a href="#" onclick="showSection('terms')">Terms of Use</a></li>
+                        <li><a href="#" onclick="showSection('privacy')">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories Column -->
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#" onclick="filterWallpapers('nature')">Nature</a></li>
+                        <li><a href="#" onclick="filterWallpapers('abstract')">Abstract</a></li>
+                        <li><a href="#" onclick="filterWallpapers('animals')">Animals</a></li>
+                        <li><a href="#" onclick="filterWallpapers('space')">Space</a></li>
+                        <li><a href="#" onclick="filterWallpapers('urban')">Urban</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info Column -->
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> info@wallhub.com</li>
+                        <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Wallpaper St, Digital City, DC 12345</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>&copy; 2023-2025 WallHub. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+
+        // Sample wallpaper data
+        let wallpapers = JSON.parse(localStorage.getItem('wallpapers')) || [
+            {
+                id: 1,
+                title: "Mountain Sunrise",
+                category: "nature",
+                image: "https://via.placeholder.com/400x300", // Full wallpaper image
+                coverPhoto: "https://via.placeholder.com/400x300", // Cover photo
+                description: "Beautiful sunrise over mountain peaks with vibrant colors",
+                resolution: "3840x2160",
+                likes: 342,
+                downloads: 120,
+                status: "published"
+            },
+            {
+                id: 2,
+                title: "Colorful Waves",
+                category: "abstract",
+                image: "https://via.placeholder.com/400x300", // Full wallpaper image
+                coverPhoto: "https://via.placeholder.com/400x300", // Cover photo
+                description: "Abstract colorful wave patterns in fluid motion",
+                resolution: "2560x1440",
+                likes: 287,
+                downloads: 95,
+                status: "published"
+            }
+        ];
+
+        // Save wallpapers to localStorage
+        function saveWallpapers() {
+            localStorage.setItem('wallpapers', JSON.stringify(wallpapers));
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load wallpapers
+            displayWallpapers(wallpapers, 'wallpapersGrid');
+            displayAdminWallpapers(); // Display wallpapers in admin panel
+            
+            // Add event listeners for forms
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleLogin();
+            });
+            
+            document.getElementById('uploadForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleUpload();
+            });
+            
+            document.getElementById('editForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleEditForm();
+            });
+            
+            document.querySelector('.contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleContactForm();
+            });
+        });
+// Display wallpapers in a grid (only published ones)
+function displayWallpapers(wallpapersArray, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    
+    // Filter out unpublished wallpapers
+    const publishedWallpapers = wallpapersArray.filter(w => w.status === 'published');
+    
+    if (publishedWallpapers.length === 0) {
+        container.innerHTML = '<p>No wallpapers found.</p>';
+        return;
+    }
+    
+    publishedWallpapers.forEach(wallpaper => {
+        const wallpaperCard = document.createElement('div');
+        wallpaperCard.className = 'wallpaper-card';
+        
+        wallpaperCard.innerHTML = `
+            <div class="wallpaper-img" style="background-image: url('${wallpaper.coverPhoto}')" onclick="openPreviewModal(${wallpaper.id})"></div>
+            <div class="wallpaper-info">
+                <h3>${wallpaper.title}</h3>
+                <p>${wallpaper.category.charAt(0).toUpperCase() + wallpaper.category.slice(1)} | ${wallpaper.resolution}</p>
+                <div class="wallpaper-actions">
+                    <button class="download-btn" onclick="downloadWallpaper(${wallpaper.id})">Download</button>
+                   
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(wallpaperCard);
+    });
+}
+
+        // Display wallpapers in admin panel with edit/unpublish options
+        function displayAdminWallpapers() {
+            const container = document.getElementById('adminWallpapersGrid');
+            container.innerHTML = '';
+            
+            if (wallpapers.length === 0) {
+                container.innerHTML = '<p>No wallpapers found.</p>';
+                return;
+            }
+            
+            wallpapers.forEach(wallpaper => {
+                const wallpaperCard = document.createElement('div');
+                wallpaperCard.className = 'wallpaper-card';
+                
+                wallpaperCard.innerHTML = `
+                    <div class="wallpaper-img" style="background-image: url('${wallpaper.coverPhoto}')"></div>
+                    <div class="wallpaper-info">
+                        <h3>${wallpaper.title}</h3>
+                        <p>${wallpaper.category.charAt(0).toUpperCase() + wallpaper.category.slice(1)} | ${wallpaper.resolution}</p>
+                        <p>Status: ${wallpaper.status}</p>
+                        <div class="wallpaper-actions">
+                            <button class="edit-btn" onclick="openEditModal(${wallpaper.id})">Edit</button>
+                            <button class="unpublish-btn" onclick="togglePublishStatus(${wallpaper.id})">
+                                ${wallpaper.status === 'published' ? 'Unpublish' : 'Publish'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(wallpaperCard);
+            });
+        }
+
+        // Toggle publish status
+        function togglePublishStatus(wallpaperId) {
+            const wallpaper = wallpapers.find(w => w.id === wallpaperId);
+            if (wallpaper) {
+                wallpaper.status = wallpaper.status === 'published' ? 'unpublished' : 'published';
+                saveWallpapers();
+                displayWallpapers(wallpapers, 'wallpapersGrid');
+                displayAdminWallpapers();
+                alert(`Wallpaper ${wallpaper.status === 'published' ? 'published' : 'unpublished'} successfully!`);
+            }
+        }
+
+        // Open edit modal
+        function openEditModal(wallpaperId) {
+            const wallpaper = wallpapers.find(w => w.id === wallpaperId);
+            
+            if (wallpaper) {
+                document.getElementById('editTitle').value = wallpaper.title;
+                document.getElementById('editCategory').value = wallpaper.category;
+                document.getElementById('editResolution').value = wallpaper.resolution;
+                document.getElementById('editImageUrl').value = wallpaper.image;
+                document.getElementById('editCoverPhotoUrl').value = wallpaper.coverPhoto;
+                document.getElementById('editDescription').value = wallpaper.description;
+                document.getElementById('editStatus').value = wallpaper.status;
+                document.getElementById('editWallpaperId').value = wallpaper.id;
+                
+                const modal = document.getElementById('editModal');
+                modal.style.display = 'flex';
+            }
+        }
+
+        // Handle edit form submission
+        function handleEditForm() {
+            const wallpaperId = parseInt(document.getElementById('editWallpaperId').value);
+            const title = document.getElementById('editTitle').value;
+            const category = document.getElementById('editCategory').value;
+            const resolution = document.getElementById('editResolution').value;
+            const imageUrl = document.getElementById('editImageUrl').value;
+            const coverPhotoUrl = document.getElementById('editCoverPhotoUrl').value;
+            const description = document.getElementById('editDescription').value;
+            const status = document.getElementById('editStatus').value;
+
+            const wallpaper = wallpapers.find(w => w.id === wallpaperId);
+            
+            if (wallpaper) {
+                wallpaper.title = title;
+                wallpaper.category = category;
+                wallpaper.resolution = resolution;
+                wallpaper.image = imageUrl;
+                wallpaper.coverPhoto = coverPhotoUrl;
+                wallpaper.description = description;
+                wallpaper.status = status;
+
+                saveWallpapers();
+                displayWallpapers(wallpapers, 'wallpapersGrid');
+                displayAdminWallpapers();
+                alert('Wallpaper updated successfully!');
+                closeEditModal();
+            }
+        }
+
+        // Close edit modal
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        // Like a wallpaper
+        function likeWallpaper(wallpaperId) {
+            const wallpaper = wallpapers.find(w => w.id === wallpaperId);
+            if (wallpaper) {
+                wallpaper.likes++;
+                saveWallpapers();
+                displayWallpapers(wallpapers, 'wallpapersGrid');
+            }
+        }
+
+        // Download a wallpaper
+        function downloadWallpaper(wallpaperId) {
+            const wallpaper = wallpapers.find(w => w.id === wallpaperId);
+            if (wallpaper) {
+                wallpaper.downloads++;
+                saveWallpapers();
+                displayWallpapers(wallpapers, 'wallpapersGrid');
+                alert(`Downloading ${wallpaper.title}... (Demo only)`);
+            }
+        }
+
+        // Filter wallpapers by category
+       function filterWallpapers(category) {
+    // Update active category
+    document.querySelectorAll('.category').forEach(cat => {
+        cat.classList.remove('active');
+        if (cat.textContent.toLowerCase() === category || (category === 'all' && cat.textContent === 'All')) {
+            cat.classList.add('active');
+        }
+    });
+    
+    // Filter and display wallpapers
+    const filteredWallpapers = category === 'all' ? 
+        wallpapers.filter(w => w.status === 'published') : 
+        wallpapers.filter(w => w.category === category && w.status === 'published');
+        
+    displayWallpapers(filteredWallpapers, 'wallpapersGrid');
+    
+    // Keep hero section visible and scroll to gallery
+    document.getElementById('home').classList.remove('hidden');
+    document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+}
+        // Search wallpapers
+        function searchWallpapers() {
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+            
+            if (searchTerm === '') {
+                alert('Please enter a search term');
+                return;
+            }
+            
+            const searchResults = wallpapers.filter(wallpaper => 
+                wallpaper.title.toLowerCase().includes(searchTerm) || 
+                wallpaper.description.toLowerCase().includes(searchTerm) ||
+                wallpaper.category.toLowerCase().includes(searchTerm)
+            );
+            
+            // Update search results info
+            document.getElementById('searchQuery').textContent = `Results for: "${searchTerm}"`;
+            document.getElementById('resultsInfo').textContent = `Found ${searchResults.length} wallpaper(s) matching your search.`;
+            
+            // Display search results
+            displayWallpapers(searchResults, 'searchResultsGrid');
+            
+            // Show search results section
+            showSection('searchResults');
+        }
+
+        // Show section and ensure admin stays logged in
+function showSection(sectionId) {
+    const sections = ['home', 'gallery', 'searchResults', 'about', 'faq', 'contact', 'terms', 'privacy', 'admin'];
+    sections.forEach(section => {
+        const elem = document.getElementById(section);
+        if (elem) {
+            elem.classList.add('hidden');
+        }
+    });
+
+    const selectedSection = document.getElementById(sectionId);
+    if (selectedSection) {
+        selectedSection.classList.remove('hidden');
+    }
+
+    if (isAdminLoggedIn && sectionId === 'admin') {
+        document.getElementById('adminLink').textContent = 'Admin Panel';
+        document.getElementById('adminLink').onclick = function () {
+            showSection('admin');
+        };
+    }
+
+    closeMenu();
+    window.scrollTo(0, 0);
+}
+
+      // Toggle login modal (open/close)
+function toggleLoginModal() {
+    const loginModal = document.getElementById('loginModal');
+    const dropdownMenu = document.getElementById('dropdownMenu'); // Get the menu content
+
+    if (loginModal.style.display === 'flex') {
+        closeLoginModal();
+    } else {
+        loginModal.style.display = 'flex';
+
+        // Close the dropdown menu when opening the login modal
+        closeMenu();
+    }
+}
+
+        // Handle Login
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation for demo purposes
+            if (username === 'admin' && password === 'password') {
+                toggleLoginModal();
+                showSection('admin');
+                document.getElementById('adminLink').textContent = 'Admin Panel';
+                document.getElementById('adminLink').onclick = function() {
+                    showSection('admin');
+                };
+            } else {
+                alert('Invalid credentials. Please try again.');
+            }
+        }
+
+        // Handle Logout
+        function logoutAdmin() {
+            document.getElementById('adminLink').textContent = 'Admin Login';
+            document.getElementById('adminLink').onclick = toggleLoginModal;
+            showSection('home');
+        }
+
+        // Handle Upload Form
+        function handleUpload() {
+            const title = document.getElementById('title').value;
+            const category = document.getElementById('category').value;
+            const resolution = document.getElementById('resolution').value;
+            const imageUrl = document.getElementById('imageUrl').value;
+            const coverPhotoUrl = document.getElementById('coverPhotoUrl').value;
+            const description = document.getElementById('description').value;
+            const status = document.getElementById('status').value;
+
+            // Create new wallpaper object
+            const newWallpaper = {
+                id: wallpapers.length + 1, // Auto-generate ID
+                title,
+                category,
+                image: imageUrl, // Use the provided image URL
+                coverPhoto: coverPhotoUrl, // Use the provided cover photo URL
+                description,
+                resolution,
+                likes: 0,
+                downloads: 0,
+                status // Add status field
+            };
+
+            // Add to wallpapers array
+            wallpapers.push(newWallpaper);
+            saveWallpapers();
+            displayWallpapers(wallpapers, 'wallpapersGrid');
+            displayAdminWallpapers();
+            alert('Wallpaper added successfully!');
+            document.getElementById('uploadForm').reset();
+        }
+
+        // Handle Contact Form
+        function handleContactForm() {
+            alert('Thank you for your message! We will get back to you soon. (Demo only)');
+            document.querySelector('.contact-form').reset();
+        }
+
+        // Open Wallpaper Preview Modal
+        function openPreviewModal(wallpaperId) {
+            const wallpaper = wallpapers.find(w => w.id === wallpaperId);
+            
+            if (wallpaper) {
+                document.getElementById('previewTitle').textContent = wallpaper.title;
+                document.getElementById('previewCoverPhoto').src = wallpaper.coverPhoto;
+                document.getElementById('previewDesc').textContent = wallpaper.description;
+                
+                document.getElementById('downloadBtn').onclick = function() {
+                    downloadWallpaper(wallpaper.id);
+                };
+                
+                const modal = document.getElementById('previewModal');
+                modal.style.display = 'flex';
+            }
+        }
+
+        // Close Preview Modal
+      function closePreviewModal() {
+    document.getElementById('previewModal').style.display = 'none';
+}
+
+// Toggle the menu and overlay
+// Check if admin is logged in on page load
+document.addEventListener('DOMContentLoaded', function () {
+    let isAdminLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+
+    if (isAdminLoggedIn) {
+        document.getElementById('adminLink').textContent = 'Admin Panel';
+        document.getElementById('adminLink').onclick = function () {
+            showSection('admin');
+        };
+        showSection('admin'); // Automatically go to admin panel
+    }
+
+    // Attach event listeners for login and logout
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        handleLogin();
+    });
+
+    document.querySelector('.logout-btn').addEventListener('click', logoutAdmin);
+});
+
+// Handle login
+function handleLogin() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if (username === 'admin' && password === 'password') {
+        localStorage.setItem('adminLoggedIn', 'true'); // Store login state
+        document.getElementById('adminLink').textContent = 'Admin Panel';
+        document.getElementById('adminLink').onclick = function () {
+            showSection('admin');
+        };
+
+        // Show login success message
+        alert('Login Successful! Redirecting to Admin Panel...');
+
+        // Close the login modal
+        document.getElementById('loginModal').style.display = 'none';
+
+        // Redirect to admin panel
+        showSection('admin');
+    } else {
+        alert('Invalid credentials. Please try again.');
+    }
+}
+
+
+// Handle logout
+function logoutAdmin() {
+    localStorage.removeItem('adminLoggedIn'); // Remove login state
+    document.getElementById('adminLink').textContent = 'Admin Login';
+    document.getElementById('adminLink').onclick = toggleLoginModal;
+    showSection('home'); // Redirect to home
+}
+
+
+// Close the menu when clicking outside
+document.addEventListener('click', function (event) {
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const burgerMenu = document.querySelector('.burger-menu');
+    const overlay = document.querySelector('.overlay');
+    const body = document.body;
+    const loginModal = document.getElementById('loginModal');
+
+    // Close menu if clicked outside
+    if (!burgerMenu.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        closeMenu();
+    }
+
+    // Close login modal if clicking outside it
+    if (loginModal.style.display === 'flex' && !loginModal.contains(event.target) && event.target !== document.getElementById('adminLink')) {
+        closeLoginModal();
+    }
+});
+
+// Function to close login modal
+function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+}
+
+// Toggle the menu and overlay
+function toggleMenu() {
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const overlay = document.querySelector('.overlay');
+    const body = document.body;
+
+    dropdownMenu.classList.toggle('active');
+    overlay.classList.toggle('active');
+    body.classList.toggle('menu-open');
+}
+
+// Close the menu function
+function closeMenu() {
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const overlay = document.querySelector('.overlay');
+    const body = document.body;
+
+    dropdownMenu.classList.remove('active');
+    overlay.classList.remove('active');
+    body.classList.remove('menu-open');
+}
+
+// Prevent clicks inside the dropdown menu from closing it
+document.getElementById('dropdownMenu').addEventListener('click', function (event) {
+    event.stopPropagation(); // Prevent event from bubbling up
+});
+// Function to open the Edit Modal and populate the fields
+function openEditModal(wallpaperId) {
+    const wallpaper = wallpapers.find(w => w.id === wallpaperId);
+    if (wallpaper) {
+        document.getElementById('editWallpaperId').value = wallpaper.id;
+        document.getElementById('editTitle').value = wallpaper.title;
+        document.getElementById('editCategory').value = wallpaper.category;
+        document.getElementById('editResolution').value = wallpaper.resolution;
+        document.getElementById('editImageUrl').value = wallpaper.image;
+        document.getElementById('editCoverPhotoUrl').value = wallpaper.coverPhoto;
+        document.getElementById('editDescription').value = wallpaper.description;
+        document.getElementById('editStatus').value = wallpaper.status;
+
+        document.getElementById('editModal').style.display = 'flex'; // Show modal
+    }
+}
+
+// Function to handle the Edit Form submission
+function handleEditForm() {
+    const wallpaperId = parseInt(document.getElementById('editWallpaperId').value);
+    const wallpaper = wallpapers.find(w => w.id === wallpaperId);
+
+    if (wallpaper) {
+        wallpaper.title = document.getElementById('editTitle').value;
+        wallpaper.category = document.getElementById('editCategory').value;
+        wallpaper.resolution = document.getElementById('editResolution').value;
+        wallpaper.image = document.getElementById('editImageUrl').value;
+        wallpaper.coverPhoto = document.getElementById('editCoverPhotoUrl').value;
+        wallpaper.description = document.getElementById('editDescription').value;
+        wallpaper.status = document.getElementById('editStatus').value;
+
+        saveWallpapers();
+        displayAdminWallpapers();
+        displayWallpapers(wallpapers, 'wallpapersGrid');
+
+        closeEditModal();
+        alert('Wallpaper updated successfully!');
+    }
+}
+
+// Function to close the Edit Modal
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
+
+// Show section and hide others
+function showSection(sectionId) {
+    // Hide all sections
+    const sections = ['home', 'gallery', 'searchResults', 'about', 'faq', 'contact', 'terms', 'privacy', 'admin'];
+    sections.forEach(section => {
+        const elem = document.getElementById(section);
+        if (elem) {
+            elem.classList.add('hidden');
+        }
+    });
+
+    // Show the selected section
+    const selectedSection = document.getElementById(sectionId);
+    if (selectedSection) {
+        selectedSection.classList.remove('hidden');
+    }
+
+    // If navigating to home, also show wallpapers
+    if (sectionId === 'home') {
+        document.getElementById('gallery').classList.remove('hidden'); // Show Browse Wallpapers
+    }
+
+    // Scroll to absolute top
+    document.documentElement.scrollTop = 0; 
+
+    // Close menu automatically
+    closeMenu();
+}
+
+
+// Prevent clicks inside the dropdown menu from closing it
+document.getElementById('dropdownMenu').addEventListener('click', function (event) {
+    event.stopPropagation(); // Prevent event from bubbling up
+});
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            alert('Right-click is disabled. Please use the download button to save images.');
+        });
+
+        // Disable opening images in new tab
+        document.addEventListener('dragstart', function (e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+
+        // Disable keyboard shortcuts (Ctrl+C, Ctrl+U, etc.)
+        document.addEventListener('keydown', function (e) {
+            // Disable Ctrl+C (Copy)
+            if (e.ctrlKey && e.key === 'c') {
+                e.preventDefault();
+                alert('Copying is disabled. Please use the download button to save images.');
+            }
+            // Disable Ctrl+U (View Source)
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+                alert('Viewing source is disabled.');
+            }
+            // Disable F12 (Developer Tools)
+            if (e.key === 'F12') {
+                e.preventDefault();
+                alert('Developer tools are disabled.');
+            }
+        });
+    </script>
+</body>
+</html>
