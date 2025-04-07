@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WallHub - Beautiful Wallpapers (Firebase)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f1e8; /* Light beige background */
+            color: #5d4b35; /* Darker brown text for contrast */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: #d9c7a0; /* Medium beige header */
+            color: #5d4b35; /* Dark brown text */
+            padding: 20px 0;
+            z-index: 1001; /* Higher than dropdown menu */
+            position: relative; /* Ensure z-index works */
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        a {
+            text-decoration: none; /* Remove underline from all links */
+            color: inherit; /* Inherit the color from parent elements */
+        }
+
+        a:hover {
+            color: #8a7053; /* Darker accent color on hover */
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #5d4b35; /* Ensure the color matches your design */
+            transition: color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        .logo:hover {
+            color: #8a7053; /* Darker accent color on hover */
+        }
+
+        .logo span {
+            color: #8a7053; /* Darker accent color */
+            transition: color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        .logo:hover span {
+            color: #6b573e; /* Even darker on hover */
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: #5d4b35; /* Dark brown text */
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #8a7053; /* Darker accent on hover */
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(217, 199, 160, 0.7), rgba(217, 199, 160, 0.7)), url('/api/placeholder/1200/400') center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .search-bar {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            font-size: 16px;
+            background-color: #f8f4eb; /* Very light beige */
+        }
+
+        .search-bar button {
+            padding: 10px 15px;
+            background-color: #8a7053; /* Darker accent color */
+            color: #f8f4eb; /* Very light beige text */
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #6b573e; /* Even darker on hover */
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 50px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .section-title p {
+            color: #8a7053; /* Darker accent color */
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category {
+            padding: 8px 15px;
+            margin: 5px;
+            background-color: #e8e0cf; /* Light beige */
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .category:hover, .category.active {
+            background-color: #8a7053; /* Darker accent color */
+            color: #f8f4eb; /* Very light beige text */
+        }
+
+        .wallpapers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .wallpaper-card {
+            background: #f8f4eb; /* Very light beige */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(93, 75, 53, 0.1);
+        }
+
+        .wallpaper-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer; /* Indicate it's clickable */
+        }
+
+        .wallpaper-info {
+            padding: 15px;
+        }
+
+        .wallpaper-info h3 {
+            margin-bottom: 5px;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .wallpaper-info p {
+            color: #8a7053; /* Darker accent color */
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .wallpaper-actions {
+            display: flex;
+            justify-content: flex-start; /* Align button to the start */
+        }
+
+        .download-btn {
+            background-color: #8a7053; /* Darker accent color */
+            color: #f8f4eb; /* Very light beige text */
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .download-btn:hover {
+            background-color: #6b573e; /* Even darker on hover */
+        }
+
+       /* Footer Styles */
+        footer {
+            background-color: #d9c7a0; /* Medium beige */
+            color: #5d4b35; /* Dark brown text */
+            padding: 50px 0 20px;
+            border-top: 1px solid #c4b58b; /* Lighter medium beige */
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #6b573e; /* Darker brown */
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: #8a7053; /* Accent color */
+        }
+
+        .footer-column p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #6b573e; /* Darker brown */
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .social-links .social-icon {
+            color: #5d4b35; /* Dark brown text */
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .social-links .social-icon:hover {
+            color: #8a7053; /* Accent color */
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #c4b58b; /* Lighter medium beige */
+            font-size: 14px;
+            color: #6b573e; /* Darker brown */
+        }
+
+        /* Font Awesome Icons */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(93, 75, 53, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #f8f4eb; /* Very light beige */
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #8a7053; /* Darker accent color */
+        }
+
+        /* Page Sections */
+        .page-section {
+            padding: 50px 0;
+        }
+
+        .page-content {
+            background-color: #f8f4eb; /* Very light beige */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(93, 75, 53, 0.1);
+            padding: 30px;
+        }
+
+        .page-content h2 {
+            margin-bottom: 20px;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .page-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .page-content h3 {
+            color: #6b573e; /* Darker brown */
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        /* FAQ Section */
+        .faq-item {
+            margin-bottom: 20px;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #6b573e; /* Darker brown */
+        }
+
+        .faq-answer {
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        /* Contact Form */
+        .contact-form {
+            display: grid;
+            gap: 20px;
+        }
+         .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #d9c7a0; /* Medium beige */
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #f8f4eb; /* Very light beige */
+            color: #5d4b35; /* Dark brown text */
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background-color: #a4bb86; /* Sage green accent */
+            color: #f8f4eb; /* Very light beige text */
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #869b6b; /* Darker sage green */
+        }
+
+
+        /* Search Results */
+        .search-results-info {
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #8a7053; /* Darker accent color */
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none;
+        }
+
+        /* Header Right Section */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* Adjust space */
+        }
+
+        /* Follow Us Text */
+        .follow-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #5d4b35;
+        }
+
+        /* Social Icons List */
+        .social-icons,
+        .social-links { /* Shared style for nav and footer */
+            display: flex;
+            list-style: none;
+            gap: 10px; /* Adjust spacing between icons */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Icons inside both nav and footer */
+        .social-icons a,
+        .social-links a {
+            font-size: 20px;
+            color: #5d4b35; /* Dark brown */
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover,
+        .social-links a:hover {
+            color: #8a7053; /* Accent color */
+        }
+
+        /* Burger Menu */
+        .burger-menu {
+            display: none; /* Hidden by default */
+            font-size: 24px;
+            color: #5d4b35;
+            cursor: pointer;
+            margin-left: 20px; /* Add space if needed */
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            right: -300px; /* Hide the menu off-screen */
+            width: 300px;
+            height: 100%;
+            background-color: #f8f4eb; /* Very light beige */
+            box-shadow: -4px 0 6px rgba(93, 75, 53, 0.1);
+            transition: right 0.3s ease; /* Smooth slide-in transition */
+            z-index: 1000;
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            align-items: flex-start; /* Align items to the left */
+        }
+
+        /* Show dropdown-menu when active */
+        .dropdown-menu.active {
+            display: flex; /* Show the menu */
+            right: 0; /* Slide the menu into view */
+        }
+
+        /* Style for menu items */
+        .dropdown-menu a {
+            display: block; /* Make each item take the full width */
+            padding: 12px 15px;
+            width: 100%; /* Full width for a clean look */
+            text-align: left; /* Align text to the left */
+            color: #5d4b35; /* Inherit text color */
+            text-decoration: none; /* Remove underline */
+            font-size: 18px; /* Make text bigger */
+            border-bottom: 1px solid #e8e0cf; /* Separator */
+        }
+
+        /* Remove bottom border from last item */
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+
+        /* Hover effect */
+        .dropdown-menu a:hover {
+            background-color: #e8e0cf; /* Light beige */
+            border-radius: 4px;
+        }
+
+        /* Overlay styles */
+        .overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(93, 75, 53, 0.5); /* Semi-transparent overlay */
+            z-index: 999;
+        }
+
+        /* Show overlay when active */
+        .overlay.active {
+            display: block; /* Show the overlay */
+        }
+
+        /* Slide main content when menu is open */
+        body.menu-open {
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .burger-menu {
+                display: block; /* Show burger menu */
+            }
+
+            .nav-right .follow-text,
+            .nav-right .social-icons {
+                display: none; /* Hide elements on smaller screens */
+            }
+        }
+
+        /* Loading indicator style */
+        #loadingIndicator {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2em;
+            color: #8a7053;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo" onclick="showSection('home'); return false;">Wall<span>Hub</span></a>
+
+            <div class="nav-right">
+                <span class="follow-text">Follow us on:</span>
+                <ul class="social-icons">
+                    <li><a href="https://www.facebook.com/chedexsonlinestore" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href="#" target="_blank" title="Threads"><i class="fab fa-threads"></i></a></li>
+                    <li><a href="#" target="_blank" title="Pinterest"><i class="fab fa-pinterest"></i></a></li>
+                    <li><a href="#" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a></li>
+                </ul>
+
+                <div class="burger-menu" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i> </div>
+            </div>
+
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="#" onclick="showSection('home')">Home</a>
+                <a href="#" onclick="showSection('about')">About Us</a>
+                <a href="#" onclick="showSection('faq')">FAQ</a>
+                <a href="#" onclick="showSection('contact')">Contact</a>
+                <a href="#" onclick="showSection('terms')">Terms of Use</a>
+                <a href="#" onclick="showSection('privacy')">Privacy Policy</a>
+                 <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #e8e0cf;">
+                    <span style="font-weight: bold; color: #5d4b35; display: block; margin-bottom: 10px;">Follow us:</span>
+                    <ul class="social-links" style="justify-content: flex-start;">
+                        <li><a href="https://www.facebook.com/chedexsonlinestore" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#" target="_blank" title="Threads"><i class="fab fa-threads"></i></a></li>
+                        <li><a href="#" target="_blank" title="Pinterest"><i class="fab fa-pinterest"></i></a></li>
+                        <li><a href="#" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+         <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container hero-content">
+                <h1>Discover Amazing Wallpapers</h1>
+                <p>Enhance your device with our stunning collection of high-quality wallpapers</p>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search wallpapers by title or description...">
+                    <button onclick="searchWallpapers()">Search</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery container">
+            <div class="section-title">
+                <h2>Browse Wallpapers</h2>
+                <p>Find the perfect wallpaper for your device</p>
+            </div>
+
+            <div class="categories">
+                <div class="category active" onclick="filterWallpapers('all')">All</div>
+                <div class="category" onclick="filterWallpapers('nature')">Nature</div>
+                <div class="category" onclick="filterWallpapers('abstract')">Abstract</div>
+                <div class="category" onclick="filterWallpapers('animals')">Animals</div>
+                <div class="category" onclick="filterWallpapers('space')">Space</div>
+                <div class="category" onclick="filterWallpapers('urban')">Urban</div>
+            </div>
+
+            <div id="loadingIndicator">Loading wallpapers...</div>
+            <div class="wallpapers-grid" id="wallpapersGrid">
+                </div>
+        </section>
+
+        <section id="searchResults" class="gallery container hidden">
+            <div class="section-title">
+                <h2>Search Results</h2>
+                <p id="searchQuery">Results for: </p>
+            </div>
+
+            <div class="search-results-info" id="resultsInfo"></div>
+
+            <div class="wallpapers-grid" id="searchResultsGrid">
+                </div>
+        </section>
+
+        <section id="about" class="page-section container hidden">
+             <div class="section-title">
+                <h2>About Us</h2>
+                <p>Learn more about WallHub</p>
+            </div>
+
+            <div class="page-content">
+                <h2>Welcome to WallHub</h2>
+                <p>WallHub is a premier destination for high-quality, beautiful wallpapers for all your devices. Founded in 2023, we've been committed to providing the best wallpaper experience for our users.</p>
+
+                <p>Our team of curators and designers work tirelessly to bring you stunning visuals that transform your digital devices into personalized works of art. From breathtaking nature scenes to abstract masterpieces, we have something for everyone.</p>
+
+                <p>At WallHub, we believe that your device's background should reflect your personality and style. That's why we're constantly updating our collection with fresh, high-resolution wallpapers that cater to various tastes and preferences.</p>
+
+                <p>Our mission is simple: to provide beautiful, high-quality wallpapers that inspire and delight our users every day.</p>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">Our Team</h3>
+                <p>WallHub is powered by a talented team of designers, developers, and wallpaper enthusiasts who are passionate about creating the best wallpaper experience for our users.</p>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">Join Our Community</h3>
+                <p>We love hearing from our users! Feel free to reach out to us with any feedback, suggestions, or just to say hello. Join our growing community of wallpaper enthusiasts and let's make your devices look amazing together.</p>
+            </div>
+        </section>
+
+        <section id="faq" class="page-section container hidden">
+             <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Get answers to common questions</p>
+            </div>
+
+            <div class="page-content">
+                <div class="faq-item">
+                    <div class="faq-question">How do I download wallpapers?</div>
+                    <div class="faq-answer">To download a wallpaper, simply browse our collection, find a wallpaper you like, and click the "Download" button. The wallpaper will be saved to your device in its original high-resolution format.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Are all wallpapers free to download?</div>
+                    <div class="faq-answer">Yes, all wallpapers on WallHub are completely free to download and use for personal purposes.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What resolution are the wallpapers?</div>
+                    <div class="faq-answer">Our wallpapers come in various resolutions, with many available in 4K (3840x2160) or higher. The specific resolution is listed on each wallpaper's details.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Can I submit my own wallpapers?</div>
+                    <div class="faq-answer">We're not currently accepting public submissions, but we're working on adding this feature in the future. Stay tuned!</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How often do you add new wallpapers?</div>
+                    <div class="faq-answer">We add new wallpapers to our collection on a weekly basis, so be sure to check back regularly for new content.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Can I use these wallpapers for commercial purposes?</div>
+                    <div class="faq-answer">The wallpapers on WallHub are intended for personal use only. For commercial licensing inquiries, please contact us through our Contact page.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How do I set a downloaded wallpaper as my background?</div>
+                    <div class="faq-answer">
+                        <p>The process varies depending on your device:</p>
+                        <p>- <strong>Windows:</strong> Right-click the image file and select "Set as desktop background"</p>
+                        <p>- <strong>Mac:</strong> Right-click the image and select "Set Desktop Picture"</p>
+                        <p>- <strong>iOS:</strong> Open the image in Photos, tap the share button, and select "Use as Wallpaper"</p>
+                        <p>- <strong>Android:</strong> Open the image, tap the menu button, and select "Set as wallpaper"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="page-section container hidden">
+             <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Get in touch with our team</p>
+            </div>
+
+            <div class="page-content">
+                <p>Have a question, suggestion, or just want to say hello? We'd love to hear from you! Fill out the form below and our team will get back to you as soon as possible.</p>
+
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="contactName">Your Name</label>
+                        <input type="text" id="contactName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactEmail">Email Address</label>
+                        <input type="email" id="contactEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactSubject">Subject</label>
+                        <input type="text" id="contactSubject" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" rows="5" required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+
+                <div style="margin-top: 30px;">
+                    <h3>Contact Information</h3>
+                    <p>Email: info@wallhub.com</p>
+                    <p>Phone: (555) 123-4567</p>
+                    <p>Address: 123 Wallpaper St, Digital City, DC 12345</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="terms" class="page-section container hidden">
+             <div class="section-title">
+                <h2>Terms of Use</h2>
+                <p>Please read our terms carefully</p>
+            </div>
+
+            <div class="page-content">
+                 <h3>1. Acceptance of Terms</h3>
+                <p>By accessing and using the WallHub website, you accept and agree to be bound by the terms and provisions of this agreement.</p>
+
+                <h3>2. Use License</h3>
+                <p>Permission is granted to temporarily download one copy of the materials on WallHub's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.</p>
+
+                <h3>3. Disclaimer</h3>
+                <p>The materials on WallHub's website are provided on an 'as is' basis. WallHub makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+
+                <h3>4. Limitations</h3>
+                <p>In no event shall WallHub or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on WallHub's website, even if WallHub or a WallHub authorized representative has been notified orally or in writing of the possibility of such damage.</p>
+
+                <h3>5. Revisions and Errata</h3>
+                <p>The materials appearing on WallHub's website could include technical, typographical, or photographic errors. WallHub does not warrant that any of the materials on its website are accurate, complete or current. WallHub may make changes to the materials contained on its website at any time without notice.</p>
+
+                <h3>6. Links</h3>
+                <p>WallHub has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by WallHub of the site. Use of any such linked website is at the user's own risk.</p>
+
+                <h3>7. Modifications</h3>
+                <p>WallHub may revise these terms of service for its website at any time without notice. By using this website you are agreeing to be bound by the then current version of these terms of service.</p>
+
+                <h3>8. Governing Law</h3>
+                <p>These terms and conditions are governed by and construed in accordance with the laws and you irrevocably submit to the exclusive jurisdiction of the courts in that location.</p>
+            </div>
+        </section>
+
+        <section id="privacy" class="page-section container hidden">
+            <div class="section-title">
+                <h2>Privacy Policy</h2>
+                <p>How we handle your data</p>
+            </div>
+
+            <div class="page-content">
+                <h3>1. Information We Collect</h3>
+                <p>We collect information you provide directly to us, such as when you use interactive features, participate in contests, promotions, or surveys, request customer support, or otherwise communicate with us.</p>
+
+                <h3>2. How We Use Information</h3>
+                <p>We may use information about you for various purposes, including to provide, maintain, and improve our services, develop new products and services, communicate with you about our services, monitor and analyze trends, usage, and activities, and personalize and improve your experience.</p>
+
+                <h3>3. Sharing of Information</h3>
+                <p>We may share information about you as follows or as otherwise described in this Privacy Policy: with vendors, consultants, and other service providers who need access to such information to carry out work on our behalf, in response to a request for information if we believe disclosure is in accordance with any applicable law, regulation, or legal process.</p>
+
+                <h3>4. Data Security</h3>
+                <p>We take reasonable measures to help protect information about you from loss, theft, misuse, and unauthorized access, disclosure, alteration, and destruction.</p>
+
+                <h3>5. Your Choices</h3>
+                <p>You may have certain choices regarding the information we collect. If you have questions about your choices, please contact us.</p>
+
+                <h3>6. Changes to this Policy</h3>
+                <p>We may change this Privacy Policy from time to time. If we make changes, we will notify you by revising the date at the top of the policy and, in some cases, we may provide you with additional notice.</p>
+
+                <h3>7. Contact Us</h3>
+                <p>If you have any questions about this Privacy Policy, please contact us at privacy@wallhub.com.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closePreviewModal()">&times;</span>
+            <h2 id="previewTitle">Wallpaper Title</h2>
+            <img id="previewCoverPhoto" src="" alt="Cover Photo" style="width: 100%; max-height: 70vh; object-fit: contain; margin: 20px 0;">
+            <p id="previewDesc">Description goes here...</p>
+            <button id="downloadBtnPreview" class="download-btn" style="margin-top: 20px; padding: 12px 20px;">Download Wallpaper</button>
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <a href="#" onclick="showSection('home')" style="text-decoration: none;">
+                        <h3>Wall<span>Hub</span></h3>
+                    </a>
+                    <p>Discover amazing wallpapers for your devices. High quality, free downloads.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/chedexsonlinestore" target="_blank" title="Facebook" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" target="_blank" title="Threads" class="social-icon"><i class="fab fa-threads"></i></a>
+                        <a href="#" target="_blank" title="Pinterest" class="social-icon"><i class="fab fa-pinterest"></i></a>
+                        <a href="#" target="_blank" title="YouTube" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#" onclick="showSection('home')">Home</a></li>
+                        <li><a href="#" onclick="showSection('about')">About Us</a></li>
+                        <li><a href="#" onclick="showSection('faq')">FAQ</a></li>
+                        <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+                        <li><a href="#" onclick="showSection('terms')">Terms of Use</a></li>
+                        <li><a href="#" onclick="showSection('privacy')">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#" onclick="filterWallpapers('nature')">Nature</a></li>
+                        <li><a href="#" onclick="filterWallpapers('abstract')">Abstract</a></li>
+                        <li><a href="#" onclick="filterWallpapers('animals')">Animals</a></li>
+                        <li><a href="#" onclick="filterWallpapers('space')">Space</a></li>
+                        <li><a href="#" onclick="filterWallpapers('urban')">Urban</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> info@wallhub.com</li>
+                        <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Wallpaper St, Digital City, DC 12345</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2023-2025 WallHub. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <script>
+        // IMPORTANT: Replace with your actual Firebase project configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD5s-oLTsM_RhsaDiVRWdybjtipeCspXmY",
+  authDomain: "online-storage-314fb.firebaseapp.com",
+  databaseURL: "https://online-storage-314fb-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "online-storage-314fb",
+  storageBucket: "online-storage-314fb.appspot.com",
+  messagingSenderId: "440072322730",
+  appId: "1:440072322730:web:3eb0275937b8ada5ae5ad3",
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Global variable to hold all wallpapers fetched from Firebase
+        let allWallpapers = [];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load wallpapers from Firebase
+            loadWallpapersFromFirebase();
+
+            // Add event listener for contact form
+            document.querySelector('.contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleContactForm();
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function (event) {
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                const burgerMenu = document.querySelector('.burger-menu');
+                const overlay = document.getElementById('overlay');
+
+                if (dropdownMenu.classList.contains('active') && !dropdownMenu.contains(event.target) && !burgerMenu.contains(event.target)) {
+                    closeMenu();
+                }
+            });
+
+            document.getElementById('dropdownMenu').addEventListener('click', function (event) {
+                event.stopPropagation();
+            });
+
+            disableImageProtection();
+        });
+
+
+        // Load wallpapers from Firebase Realtime Database
+        function loadWallpapersFromFirebase() {
+            const wallpapersRef = database.ref('wallpapers'); // Reference to your wallpapers node
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            loadingIndicator.style.display = 'block'; // Show loading indicator
+
+            wallpapersRef.once('value', (snapshot) => {
+                const data = snapshot.val();
+                allWallpapers = []; // Clear previous data
+
+                if (data) {
+                    // Firebase returns data as an object if keys aren't sequential numbers
+                    // Convert the object into an array, adding the key as 'id'
+                    allWallpapers = Object.keys(data).map(key => ({
+                        id: key, // Use Firebase key as the ID
+                        ...data[key]
+                    }));
+
+                    // Filter only published wallpapers for initial display
+                    const publishedWallpapers = allWallpapers.filter(w => w.status === 'published');
+                    displayWallpapers(publishedWallpapers, 'wallpapersGrid');
+                } else {
+                    console.log("No wallpapers found in Firebase.");
+                    displayWallpapers([], 'wallpapersGrid'); // Display empty state
+                }
+                loadingIndicator.style.display = 'none'; // Hide loading indicator
+            }).catch((error) => {
+                console.error("Error fetching wallpapers from Firebase: ", error);
+                loadingIndicator.textContent = 'Error loading wallpapers.'; // Show error message
+                // Optionally display an error message to the user on the page
+                document.getElementById('wallpapersGrid').innerHTML = '<p>Sorry, we encountered an error loading wallpapers. Please try again later.</p>';
+            });
+        }
+
+
+        // Display wallpapers in a grid
+        function displayWallpapers(wallpapersArray, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = ''; // Clear existing content
+
+            if (!wallpapersArray || wallpapersArray.length === 0) {
+                container.innerHTML = '<p>No wallpapers found matching your criteria.</p>';
+                // Ensure loading indicator is hidden if it was visible
+                const loadingIndicator = document.getElementById('loadingIndicator');
+                if(loadingIndicator) loadingIndicator.style.display = 'none';
+                return;
+            }
+
+            wallpapersArray.forEach(wallpaper => {
+                // Double check status just in case
+                 if (wallpaper.status !== 'published') return;
+
+                const wallpaperCard = document.createElement('div');
+                wallpaperCard.className = 'wallpaper-card';
+
+                // Use the Firebase key (wallpaper.id) for functions
+                wallpaperCard.innerHTML = `
+                    <div class="wallpaper-img" style="background-image: url('${wallpaper.coverPhoto}')" onclick="openPreviewModal('${wallpaper.id}')"></div>
+                    <div class="wallpaper-info">
+                        <h3>${wallpaper.title}</h3>
+                        <p>${wallpaper.category ? wallpaper.category.charAt(0).toUpperCase() + wallpaper.category.slice(1) : 'Uncategorized'} | ${wallpaper.resolution || 'N/A'}</p>
+                        <div class="wallpaper-actions">
+                            <button class="download-btn" onclick="triggerDownload('${wallpaper.id}')">Download</button>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(wallpaperCard);
+            });
+        }
+
+
+        // Trigger the download (using the fetched data)
+        function triggerDownload(wallpaperId) {
+            const wallpaper = allWallpapers.find(w => w.id === wallpaperId);
+            if (wallpaper && wallpaper.image) {
+                 // In a real scenario, you might want to trigger a direct download.
+                 // This simulation opens the image URL in a new tab.
+                 // For a direct download, you'd need a server-side endpoint or use download attribute with caveats.
+                 console.log(`Attempting to open download link for "${wallpaper.title}" (URL: ${wallpaper.image})`);
+                // window.open(wallpaper.image, '_blank'); // Opens image in new tab
+
+                 // Attempt direct download using an anchor tag (works for same-origin or CORS-enabled URLs)
+                const link = document.createElement('a');
+                link.href = wallpaper.image;
+                // Extract filename if possible, otherwise use title
+                const filename = wallpaper.image.substring(wallpaper.image.lastIndexOf('/') + 1) || `${wallpaper.title.replace(/ /g, '_')}.jpg`;
+                link.download = filename; // Suggest a filename
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                alert(`Download initiated for "${wallpaper.title}". Check your browser's downloads.`);
+            } else {
+                console.error(`Wallpaper data or image URL not found for ID ${wallpaperId}.`);
+                alert("Sorry, couldn't find the wallpaper file for download.");
+            }
+        }
+
+        // Filter wallpapers by category
+       function filterWallpapers(category) {
+            // Update active category button style
+            document.querySelectorAll('.category').forEach(cat => {
+                cat.classList.remove('active');
+                if (cat.textContent.trim().toLowerCase() === category.trim().toLowerCase()) {
+                    cat.classList.add('active');
+                }
+            });
+
+            // Filter based on the globally stored wallpapers from Firebase
+            const publishedWallpapers = allWallpapers.filter(w => w.status === 'published');
+            const filteredWallpapers = category === 'all' ?
+                publishedWallpapers :
+                publishedWallpapers.filter(w => w.category && w.category.toLowerCase() === category.toLowerCase());
+
+            displayWallpapers(filteredWallpapers, 'wallpapersGrid');
+
+            // Hide search results, show main gallery
+            document.getElementById('searchResults').classList.add('hidden');
+            document.getElementById('gallery').classList.remove('hidden');
+            const heroSection = document.getElementById('home');
+             if (heroSection) heroSection.classList.remove('hidden');
+
+             document.getElementById('gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+
+        // Search wallpapers (client-side based on fetched data)
+        function searchWallpapers() {
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+
+            if (searchTerm === '') {
+                filterWallpapers('all');
+                return;
+            }
+
+            const publishedWallpapers = allWallpapers.filter(w => w.status === 'published');
+            const searchResults = publishedWallpapers.filter(wallpaper =>
+                wallpaper.title.toLowerCase().includes(searchTerm) ||
+                (wallpaper.description && wallpaper.description.toLowerCase().includes(searchTerm)) ||
+                (wallpaper.category && wallpaper.category.toLowerCase().includes(searchTerm))
+            );
+
+            document.getElementById('searchQuery').textContent = `Results for: "${searchTerm}"`;
+            document.getElementById('resultsInfo').textContent = `Found ${searchResults.length} wallpaper(s) matching your search.`;
+
+            displayWallpapers(searchResults, 'searchResultsGrid');
+
+            document.getElementById('gallery').classList.add('hidden');
+            document.getElementById('searchResults').classList.remove('hidden');
+            document.getElementById('searchResults').scrollIntoView({ behavior: 'smooth' });
+        }
+
+
+        // Show section and hide others
+        function showSection(sectionId) {
+            const sections = ['home', 'gallery', 'searchResults', 'about', 'faq', 'contact', 'terms', 'privacy'];
+            sections.forEach(id => {
+                const elem = document.getElementById(id);
+                if (elem) elem.classList.add('hidden');
+            });
+
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.remove('hidden');
+            } else {
+                 document.getElementById('home')?.classList.remove('hidden');
+                 document.getElementById('gallery')?.classList.remove('hidden');
+            }
+
+            if (sectionId === 'home') {
+                 document.getElementById('gallery')?.classList.remove('hidden');
+            }
+
+            closeMenu();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+
+        // Handle Contact Form Submission (Simulation)
+        function handleContactForm() {
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+
+            if (!name || !email || !message) {
+                 alert('Please fill in all fields.');
+                 return;
+            }
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                 alert('Please enter a valid email address.');
+                 return;
+            }
+
+            // OPTIONAL: You could store contact messages in Firebase too
+            /*
+            const contactRef = database.ref('contacts');
+            contactRef.push({
+                name: name,
+                email: email,
+                subject: document.getElementById('contactSubject').value,
+                message: message,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            }).then(() => {
+                alert('Thank you for your message! We will get back to you soon.');
+                document.querySelector('.contact-form').reset();
+            }).catch((error) => {
+                console.error("Error sending message to Firebase: ", error);
+                alert('Sorry, there was an error sending your message. Please try again later.');
+            });
+            */
+             alert('Thank you for your message! We will get back to you soon. (This is a demo - Firebase saving is commented out)');
+             document.querySelector('.contact-form').reset();
+        }
+
+        // Open Wallpaper Preview Modal
+        function openPreviewModal(wallpaperId) {
+            const wallpaper = allWallpapers.find(w => w.id === wallpaperId);
+
+            if (wallpaper && wallpaper.status === 'published') {
+                document.getElementById('previewTitle').textContent = wallpaper.title;
+                document.getElementById('previewCoverPhoto').src = wallpaper.image; // Show full image
+                document.getElementById('previewCoverPhoto').alt = wallpaper.title;
+                document.getElementById('previewDesc').textContent = wallpaper.description || 'No description available.';
+
+                // Update the download button in the modal
+                const downloadButton = document.getElementById('downloadBtnPreview');
+                const newDownloadButton = downloadButton.cloneNode(true);
+                downloadButton.parentNode.replaceChild(newDownloadButton, downloadButton);
+                newDownloadButton.addEventListener('click', () => triggerDownload(wallpaper.id));
+
+                document.getElementById('previewModal').style.display = 'flex';
+            } else {
+                 console.warn(`Preview requested for non-existent or unpublished wallpaper ID: ${wallpaperId}`);
+            }
+        }
+
+        // Close Preview Modal
+        function closePreviewModal() {
+            document.getElementById('previewModal').style.display = 'none';
+            document.getElementById('previewCoverPhoto').src = '';
+            document.getElementById('previewTitle').textContent = 'Wallpaper Title';
+            document.getElementById('previewDesc').textContent = 'Description goes here...';
+        }
+
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const overlay = document.getElementById('overlay');
+            const body = document.body;
+            const isActive = dropdownMenu.classList.contains('active');
+            if (isActive) {
+                closeMenu();
+            } else {
+                dropdownMenu.classList.add('active');
+                overlay.classList.add('active');
+                body.classList.add('menu-open');
+            }
+        }
+
+        // Close Mobile Menu
+        function closeMenu() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const overlay = document.getElementById('overlay');
+            const body = document.body;
+            dropdownMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            body.classList.remove('menu-open');
+        }
+
+        // Basic Image Protection
+        function disableImageProtection() {
+            document.addEventListener('contextmenu', function (e) {
+                e.preventDefault();
+                console.log("Right-click prevented.");
+            });
+            document.addEventListener('dragstart', function (e) {
+                if (e.target.tagName === 'IMG' || (e.target.classList && e.target.classList.contains('wallpaper-img'))) {
+                    e.preventDefault();
+                     console.log("Image dragging prevented.");
+                }
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.ctrlKey && e.key === 's') e.preventDefault();
+                if (e.ctrlKey && e.key === 'u') e.preventDefault();
+                if (e.key === 'F12') e.preventDefault();
+            });
+        }
+
+    </script>
+</body>
+</html>
