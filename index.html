@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CheDex Wallpapers - Beautiful Wallpapers (Firebase)</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>CheDex Wallpapers - Beautiful Wallpapers (Firebase)</title> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         /* Global Styles */
         * {
@@ -214,63 +213,25 @@
             margin-bottom: 0; /* Remove default bottom margin */
         }
 
-        /* *** MODIFIED: Added styles for share/copy buttons *** */
         .wallpaper-actions {
             display: flex;
-            gap: 10px; /* Add space between buttons */
+            justify-content: flex-start; /* Align button to the start */
             margin-top: auto; /* Push actions to the bottom */
-            flex-wrap: wrap; /* Allow buttons to wrap on smaller cards */
-            align-items: center; /* Align buttons vertically if they wrap */
         }
 
         .download-btn {
             background-color: #8a7053; /* Darker accent color */
             color: #f8f4eb; /* Very light beige text */
-            padding: 8px 12px; /* Adjusted padding */
+            padding: 8px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
-            font-size: 13px; /* Adjusted font size */
-            display: inline-flex; /* Align icon and text */
-            align-items: center;
-            gap: 5px; /* Space between icon and text */
         }
 
         .download-btn:hover {
             background-color: #6b573e; /* Even darker on hover */
         }
-
-        /* *** NEW: Styles for Share and Copy buttons *** */
-        .share-btn, .copy-link-btn {
-            background-color: #a4bb86; /* Example: Sage green accent */
-            color: #f8f4eb;
-            padding: 8px 12px; /* Match download button padding */
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 13px; /* Match download button font size */
-            display: inline-flex; /* Align icon and text */
-            align-items: center;
-            gap: 5px; /* Space between icon and text */
-        }
-
-        .share-btn:hover, .copy-link-btn:hover {
-            background-color: #869b6b; /* Darker sage green */
-        }
-
-        .share-btn i, .copy-link-btn i, .download-btn i {
-            font-size: 1em; /* Match icon size to text */
-        }
-
-        /* Optional: Style for the copied state */
-        .copy-link-btn.copied {
-            background-color: #5d4b35; /* Dark brown */
-            cursor: default;
-        }
-        /* *** END NEW STYLES *** */
-
 
        /* Footer Styles */
         footer {
@@ -353,7 +314,7 @@
         }
 
         /* Font Awesome Icons */
-        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'); /* Keep this if still needed, but FontAwesome 6 is linked */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
 
         /* Modal */
         .modal {
@@ -666,9 +627,6 @@
              .hero-content p {
                  font-size: 14px;
              }
-             .wallpaper-actions {
-                justify-content: center; /* Center buttons on small screens */
-             }
         }
 
         /* Loading indicator style */
@@ -710,6 +668,7 @@
             cursor: not-allowed;
             border-color: #e8e0cf;
         }
+
 
     </style>
 </head>
@@ -949,6 +908,7 @@
                 <h3>7. Contact Us</h3>
                 <p>If you have any questions about this Privacy Policy, please contact us at privacy@chedexwallpapers.com.</p> </div>
         </section>
+
     </main>
 
     <div class="modal" id="previewModal">
@@ -957,7 +917,7 @@
             <h2 id="previewTitle">Wallpaper Title</h2>
             <img id="previewCoverPhoto" src="" alt="Cover Photo" style="width: 100%; max-height: 70vh; object-fit: contain; margin: 20px 0;">
             <p id="previewDesc">Description goes here...</p>
-            <button id="downloadBtnPreview" class="download-btn" style="margin-top: 20px; padding: 12px 20px;"><i class="fas fa-download"></i> Download Wallpaper</button>
+            <button id="downloadBtnPreview" class="download-btn" style="margin-top: 20px; padding: 12px 20px;">Download Wallpaper</button>
         </div>
     </div>
 
@@ -1018,13 +978,13 @@
     <script>
         // IMPORTANT: Replace with your actual Firebase project configuration
         const firebaseConfig = {
-             apiKey: "YOUR_API_KEY", // Replace with yours
-             authDomain: "YOUR_AUTH_DOMAIN", // Replace with yours
-             databaseURL: "YOUR_DATABASE_URL", // Replace with yours
-             projectId: "YOUR_PROJECT_ID", // Replace with yours
-             storageBucket: "YOUR_STORAGE_BUCKET", // Replace with yours
-             messagingSenderId: "YOUR_MESSAGING_SENDER_ID", // Replace with yours
-             appId: "YOUR_APP_ID", // Replace with yours
+             apiKey: "AIzaSyD5s-oLTsM_RhsaDiVRWdybjtipeCspXmY", // Example, replace with yours
+             authDomain: "online-storage-314fb.firebaseapp.com", // Example, replace with yours
+             databaseURL: "https://online-storage-314fb-default-rtdb.asia-southeast1.firebasedatabase.app", // Example, replace with yours
+             projectId: "online-storage-314fb", // Example, replace with yours
+             storageBucket: "online-storage-314fb.appspot.com", // Example, replace with yours
+             messagingSenderId: "440072322730", // Example, replace with yours
+             appId: "1:440072322730:web:3eb0275937b8ada5ae5ad3", // Example, replace with yours
         };
 
         // Initialize Firebase
@@ -1057,32 +1017,19 @@
                 const dropdownMenu = document.getElementById('dropdownMenu');
                 const burgerMenu = document.querySelector('.burger-menu');
 
+                // Check if the click is outside the menu and the burger icon
                 if (dropdownMenu.classList.contains('active') && !dropdownMenu.contains(event.target) && !burgerMenu.contains(event.target)) {
                     closeMenu();
                 }
             });
 
+             // Prevent clicks inside the dropdown from closing it
             document.getElementById('dropdownMenu').addEventListener('click', function (event) {
+                 // Allow clicks on links inside the menu to proceed
                  if (event.target.tagName !== 'A') {
                       event.stopPropagation();
                  }
             });
-
-             // *** NEW: Handle loading wallpaper via hash link on page load ***
-            if (window.location.hash && window.location.hash.startsWith('#wallpaper=')) {
-                const wallpaperId = window.location.hash.substring('#wallpaper='.length);
-                // Wait a moment for wallpapers to potentially load via Firebase async
-                setTimeout(() => {
-                    // Check if wallpaper data is loaded before trying to open
-                    if (allWallpapers.length > 0) {
-                        openPreviewModal(wallpaperId);
-                    } else {
-                         // If not loaded yet, maybe wait longer or handle differently
-                         console.log("Wallpapers not loaded yet, cannot open modal from hash.");
-                    }
-                }, 700); // Slightly increased delay
-            }
-             // *** END NEW HASH HANDLING ***
 
             disableImageProtection();
         });
@@ -1092,8 +1039,8 @@
         function loadWallpapersFromFirebase() {
             const wallpapersRef = database.ref('wallpapers');
             loadingIndicator.style.display = 'block';
-            galleryGrid.innerHTML = '';
-            paginationControlsGallery.innerHTML = '';
+            galleryGrid.innerHTML = ''; // Clear grid while loading
+            paginationControlsGallery.innerHTML = ''; // Clear pagination
 
             wallpapersRef.once('value', (snapshot) => {
                 const data = snapshot.val();
@@ -1103,23 +1050,12 @@
                     allWallpapers = Object.keys(data).map(key => ({
                         id: key,
                         ...data[key]
-                    })).filter(w => w.status === 'published');
+                    })).filter(w => w.status === 'published'); // Store only published ones globally
 
-                    currentWallpapers = [...allWallpapers];
-                    currentPage = 1;
+                    currentWallpapers = [...allWallpapers]; // Initially, current = all
+                    currentPage = 1; // Reset to page 1
                     displayWallpapers(currentWallpapers, 'wallpapersGrid', currentPage);
                     setupPagination(currentWallpapers.length, 'paginationControlsGallery', 'wallpapersGrid');
-
-                    // *** NEW: After loading, check again if hash needs handling ***
-                    if (window.location.hash && window.location.hash.startsWith('#wallpaper=')) {
-                        const wallpaperId = window.location.hash.substring('#wallpaper='.length);
-                         // Check if modal isn't already open
-                         if (document.getElementById('previewModal').style.display !== 'flex') {
-                            openPreviewModal(wallpaperId);
-                         }
-                    }
-                    // *** END NEW HASH CHECK ***
-
                 } else {
                     console.log("No wallpapers found in Firebase.");
                     galleryGrid.innerHTML = '<p>No wallpapers found.</p>';
@@ -1135,12 +1071,14 @@
         // Display wallpapers for a specific page
         function displayWallpapers(wallpapersArray, containerId, page) {
             const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            page = page || 1;
+            container.innerHTML = ''; // Clear existing content
+            page = page || 1; // Default to page 1 if not provided
 
             if (!wallpapersArray || wallpapersArray.length === 0) {
                 container.innerHTML = '<p>No wallpapers found matching your criteria.</p>';
+                // Ensure loading indicator is hidden if it was visible
                  if(loadingIndicator) loadingIndicator.style.display = 'none';
+                // Clear associated pagination
                  const paginationContainerId = containerId === 'wallpapersGrid' ? 'paginationControlsGallery' : 'paginationControlsSearch';
                  document.getElementById(paginationContainerId).innerHTML = '';
                 return;
@@ -1151,39 +1089,29 @@
             const paginatedItems = wallpapersArray.slice(startIndex, endIndex);
 
             paginatedItems.forEach(wallpaper => {
-                if (wallpaper.status !== 'published') return;
+                if (wallpaper.status !== 'published') return; // Double check
 
                 const wallpaperCard = document.createElement('div');
                 wallpaperCard.className = 'wallpaper-card';
 
-                // *** MODIFIED: Added Share and Copy Link buttons ***
                 wallpaperCard.innerHTML = `
                     <div class="wallpaper-img" style="background-image: url('${wallpaper.coverPhoto || '/api/placeholder/280/200?text=No+Preview'}')" onclick="openPreviewModal('${wallpaper.id}')"></div>
                     <div class="wallpaper-info">
-                         <div>
-                              <h3>${wallpaper.title || 'Untitled'}</h3>
-                              <p>${wallpaper.category ? wallpaper.category.charAt(0).toUpperCase() + wallpaper.category.slice(1) : 'Uncategorized'} | ${wallpaper.resolution || 'N/A'}</p>
+                         <div> <h3>${wallpaper.title || 'Untitled'}</h3>
+                             <p>${wallpaper.category ? wallpaper.category.charAt(0).toUpperCase() + wallpaper.category.slice(1) : 'Uncategorized'} | ${wallpaper.resolution || 'N/A'}</p>
                          </div>
                         <div class="wallpaper-actions">
-                            <button class="download-btn" onclick="triggerDownload('${wallpaper.id}')">
-                                <i class="fas fa-download"></i> Download
-                            </button>
-                            <button class="share-btn" onclick="shareWallpaper('${wallpaper.id}', '${wallpaper.title || 'Wallpaper'}')">
-                                <i class="fas fa-share-alt"></i> Share
-                            </button>
-                            <button class="copy-link-btn" onclick="copyWallpaperLink(this, '${wallpaper.id}')">
-                                <i class="fas fa-copy"></i> Copy Link
-                            </button>
+                            <button class="download-btn" onclick="triggerDownload('${wallpaper.id}')">Download</button>
                         </div>
                     </div>
                 `;
-                // *** END MODIFICATION ***
                 container.appendChild(wallpaperCard);
             });
+             // Ensure loading indicator is hidden after displaying
              if(loadingIndicator) loadingIndicator.style.display = 'none';
         }
 
-        // Setup pagination controls (Unchanged from previous version)
+        // Setup pagination controls
         function setupPagination(totalItems, paginationContainerId, gridContainerId) {
             const paginationContainer = document.getElementById(paginationContainerId);
             paginationContainer.innerHTML = ''; // Clear existing controls
@@ -1205,7 +1133,7 @@
             };
             paginationContainer.appendChild(prevButton);
 
-            // Page Number Buttons
+            // Page Number Buttons (simplified for brevity, could add ellipses for many pages)
             for (let i = 1; i <= pageCount; i++) {
                 const pageButton = document.createElement('button');
                 pageButton.textContent = i;
@@ -1236,13 +1164,13 @@
             paginationContainer.appendChild(nextButton);
         }
 
-        // Update state of pagination buttons (Unchanged from previous version)
+        // Update state of pagination buttons (active page, disabled prev/next)
         function updatePaginationButtons(paginationContainerId, pageCount) {
              const paginationContainer = document.getElementById(paginationContainerId);
              const buttons = paginationContainer.querySelectorAll('.pagination-btn');
              buttons.forEach(button => {
                  button.classList.remove('active');
-                 button.disabled = false;
+                 button.disabled = false; // Re-enable all first
 
                  const pageNum = parseInt(button.textContent);
                  if (!isNaN(pageNum) && pageNum === currentPage) {
@@ -1258,78 +1186,84 @@
          }
 
 
-        // Trigger the download (Unchanged from previous version)
+        // Trigger the download
         function triggerDownload(wallpaperId) {
-            const wallpaper = allWallpapers.find(w => w.id === wallpaperId);
+            const wallpaper = allWallpapers.find(w => w.id === wallpaperId); // Search in allWallpapers
             if (wallpaper && wallpaper.image) {
                 const link = document.createElement('a');
                 link.href = wallpaper.image;
-                const filename = `${(wallpaper.title || 'wallpaper').replace(/\s+/g, '_')}_${wallpaper.resolution || ''}.jpg`;
+                const filename = `${(wallpaper.title || 'wallpaper').replace(/\s+/g, '_')}_${wallpaper.resolution || ''}.jpg`; // Better filename
                 link.download = filename;
                 link.style.display = 'none';
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                trackDownload(wallpaperId);
+                trackDownload(wallpaperId); // Optional tracking
             } else {
                 console.error(`Wallpaper data or image URL not found for ID ${wallpaperId}.`);
                 alert("Sorry, couldn't find the wallpaper file for download.");
             }
         }
 
-        // Optional: Track downloads in Firebase (Unchanged from previous version)
+        // Optional: Track downloads in Firebase
         function trackDownload(wallpaperId) {
+            // Check if Firebase database object exists before using it
              if (typeof database !== 'undefined' && database.ref) {
                  const downloadsRef = database.ref('downloads/' + wallpaperId);
                  downloadsRef.transaction((currentCount) => {
                      return (currentCount || 0) + 1;
                  }).catch(error => {
-                     console.warn("Could not track download in Firebase:", error);
+                     console.warn("Could not track download in Firebase:", error); // Log as warning, not critical error
                  });
              } else {
                  console.warn("Firebase database not initialized, download tracking skipped.");
              }
         }
 
-        // Filter wallpapers by category (Unchanged from previous version)
+        // Filter wallpapers by category
        function filterWallpapers(category) {
+            // Update active category button style
             document.querySelectorAll('.category').forEach(cat => {
                 cat.classList.remove('active');
+                 // Use dataset or direct comparison
                  if (cat.getAttribute('onclick') === `filterWallpapers('${category}')`) {
                      cat.classList.add('active');
                  }
             });
 
-            const publishedWallpapers = allWallpapers;
+            // Filter based on the globally stored wallpapers
+            const publishedWallpapers = allWallpapers; // Already filtered on load
             currentWallpapers = category === 'all' ?
                 [...publishedWallpapers] :
                 publishedWallpapers.filter(w => w.category && w.category.toLowerCase() === category.toLowerCase());
 
-            currentPage = 1;
+            currentPage = 1; // Reset to page 1
             displayWallpapers(currentWallpapers, 'wallpapersGrid', currentPage);
             setupPagination(currentWallpapers.length, 'paginationControlsGallery', 'wallpapersGrid');
 
 
+            // Hide search results, show main gallery
             document.getElementById('searchResults').classList.add('hidden');
             document.getElementById('gallery').classList.remove('hidden');
             const heroSection = document.getElementById('home');
              if (heroSection) heroSection.classList.remove('hidden');
 
+            // Scroll gallery into view smoothly
              document.getElementById('gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
 
-        // Search wallpapers (Unchanged from previous version)
+        // Search wallpapers
         function searchWallpapers() {
             const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
 
             if (searchTerm === '') {
-                filterWallpapers('all');
+                filterWallpapers('all'); // Show all if search is cleared
                 return;
             }
 
-            const publishedWallpapers = allWallpapers;
-            currentWallpapers = publishedWallpapers.filter(wallpaper =>
+            const publishedWallpapers = allWallpapers; // Already filtered on load
+            currentWallpapers = publishedWallpapers.filter(wallpaper => // Update currentWallpapers
                 (wallpaper.title && wallpaper.title.toLowerCase().includes(searchTerm)) ||
                 (wallpaper.description && wallpaper.description.toLowerCase().includes(searchTerm)) ||
                 (wallpaper.category && wallpaper.category.toLowerCase().includes(searchTerm))
@@ -1338,19 +1272,19 @@
             document.getElementById('searchQuery').textContent = `Results for: "${searchTerm}"`;
             document.getElementById('resultsInfo').textContent = `Found ${currentWallpapers.length} wallpaper(s) matching your search.`;
 
-            currentPage = 1;
+            currentPage = 1; // Reset to page 1 for search results
             displayWallpapers(currentWallpapers, 'searchResultsGrid', currentPage);
-             setupPagination(currentWallpapers.length, 'paginationControlsSearch', 'searchResultsGrid');
+             setupPagination(currentWallpapers.length, 'paginationControlsSearch', 'searchResultsGrid'); // Setup pagination for search
 
 
-            document.getElementById('gallery').classList.add('hidden');
-             document.getElementById('paginationControlsGallery').innerHTML = '';
-            document.getElementById('searchResults').classList.remove('hidden');
+            document.getElementById('gallery').classList.add('hidden'); // Hide main gallery
+             document.getElementById('paginationControlsGallery').innerHTML = ''; // Clear gallery pagination
+            document.getElementById('searchResults').classList.remove('hidden'); // Show search results section
             document.getElementById('searchResults').scrollIntoView({ behavior: 'smooth' });
         }
 
 
-        // Show section and hide others (Unchanged from previous version)
+        // Show section and hide others
         function showSection(sectionId) {
             const sections = ['home', 'gallery', 'searchResults', 'about', 'faq', 'contact', 'terms', 'privacy'];
             sections.forEach(id => {
@@ -1358,36 +1292,42 @@
                 if (elem) elem.classList.add('hidden');
             });
 
+             // Hide pagination containers initially
              if(paginationControlsGallery) paginationControlsGallery.style.display = 'none';
              if(paginationControlsSearch) paginationControlsSearch.style.display = 'none';
 
             const selectedSection = document.getElementById(sectionId);
             if (selectedSection) {
                 selectedSection.classList.remove('hidden');
+                 // Special handling for gallery/home to ensure related elements show
                  if (sectionId === 'home' || sectionId === 'gallery') {
-                     document.getElementById('home')?.classList.remove('hidden');
-                     document.getElementById('gallery')?.classList.remove('hidden');
-                     if(paginationControlsGallery) paginationControlsGallery.style.display = 'block';
+                     document.getElementById('home')?.classList.remove('hidden'); // Ensure hero is visible
+                     document.getElementById('gallery')?.classList.remove('hidden'); // Ensure gallery section is visible
+                     if(paginationControlsGallery) paginationControlsGallery.style.display = 'block'; // Show gallery pagination
+                     // Optionally trigger a default filter if needed
                      if (!document.querySelector('.category.active')) {
-                         filterWallpapers('all');
+                         filterWallpapers('all'); // Ensure something is displayed if navigating directly
                      }
                  } else if (sectionId === 'searchResults') {
-                      if(paginationControlsSearch) paginationControlsSearch.style.display = 'block';
+                      if(paginationControlsSearch) paginationControlsSearch.style.display = 'block'; // Show search pagination
                  }
 
             } else {
+                 // Default to home/gallery view if sectionId is invalid
                  document.getElementById('home')?.classList.remove('hidden');
                  document.getElementById('gallery')?.classList.remove('hidden');
                  if(paginationControlsGallery) paginationControlsGallery.style.display = 'block';
-                 filterWallpapers('all');
+                 filterWallpapers('all'); // Default view
             }
 
+            // Close menu if open
             closeMenu();
+            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
 
-        // Handle Contact Form Submission (Unchanged from previous version, keeps simulation)
+        // Handle Contact Form Submission (Simulation)
         function handleContactForm() {
             const name = document.getElementById('contactName').value;
             const email = document.getElementById('contactEmail').value;
@@ -1402,26 +1342,53 @@
                  return;
             }
 
+            // Simulation - replace with actual backend/Firebase logic if needed
              alert('Thank you for your message! We will get back to you soon. (This is a demo)');
              document.querySelector('.contact-form').reset();
+
+             /*
+            // OPTIONAL: Firebase saving example
+            if (typeof database !== 'undefined' && database.ref) {
+                const contactRef = database.ref('contacts');
+                contactRef.push({
+                    name: name,
+                    email: email,
+                    subject: document.getElementById('contactSubject').value,
+                    message: message,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP // Use server timestamp
+                }).then(() => {
+                    alert('Thank you for your message! We will get back to you soon.');
+                    document.querySelector('.contact-form').reset();
+                }).catch((error) => {
+                    console.error("Error sending message to Firebase: ", error);
+                    alert('Sorry, there was an error sending your message. Please try again later.');
+                });
+            } else {
+                 alert('Thank you for your message! (Firebase not configured for saving)');
+                 document.querySelector('.contact-form').reset();
+            }
+            */
         }
 
-        // Open Wallpaper Preview Modal (Unchanged from previous version)
+        // Open Wallpaper Preview Modal
         function openPreviewModal(wallpaperId) {
-            const wallpaper = allWallpapers.find(w => w.id === wallpaperId);
+            const wallpaper = allWallpapers.find(w => w.id === wallpaperId); // Use allWallpapers
 
             if (wallpaper && wallpaper.status === 'published') {
                 document.getElementById('previewTitle').textContent = wallpaper.title;
-                document.getElementById('previewCoverPhoto').src = wallpaper.image || '/api/placeholder/500/400?text=No+Image';
+                document.getElementById('previewCoverPhoto').src = wallpaper.image || '/api/placeholder/500/400?text=No+Image'; // Show full image or placeholder
                 document.getElementById('previewCoverPhoto').alt = wallpaper.title;
                 document.getElementById('previewDesc').textContent = wallpaper.description || 'No description available.';
 
+                // Re-attach event listener to the download button inside the modal
                 const downloadButton = document.getElementById('downloadBtnPreview');
+                 // Clone and replace to remove old listeners
                  const newDownloadButton = downloadButton.cloneNode(true);
                  downloadButton.parentNode.replaceChild(newDownloadButton, downloadButton);
+                 // Add new listener
                 newDownloadButton.addEventListener('click', () => {
-                    triggerDownload(wallpaper.id);
-                    closePreviewModal();
+                    triggerDownload(wallpaper.id); // Use the correct ID
+                    closePreviewModal(); // Optionally close modal after clicking download
                 });
 
                 document.getElementById('previewModal').style.display = 'flex';
@@ -1431,16 +1398,17 @@
             }
         }
 
-        // Close Preview Modal (Unchanged from previous version)
+        // Close Preview Modal
         function closePreviewModal() {
             const modal = document.getElementById('previewModal');
              if (modal) modal.style.display = 'none';
+             // Reset modal content (optional)
              document.getElementById('previewCoverPhoto').src = '';
              document.getElementById('previewTitle').textContent = 'Wallpaper Title';
              document.getElementById('previewDesc').textContent = 'Description goes here...';
         }
 
-        // Toggle Mobile Menu (Unchanged from previous version)
+        // Toggle Mobile Menu
         function toggleMenu() {
             const dropdownMenu = document.getElementById('dropdownMenu');
             const overlay = document.getElementById('overlay');
@@ -1455,7 +1423,7 @@
             }
         }
 
-        // Close Mobile Menu (Unchanged from previous version)
+        // Close Mobile Menu
         function closeMenu() {
             const dropdownMenu = document.getElementById('dropdownMenu');
             const overlay = document.getElementById('overlay');
@@ -1465,84 +1433,28 @@
             body.classList.remove('menu-open');
         }
 
-        // Basic Image Protection (Unchanged from previous version)
+        // Basic Image Protection (can be bypassed)
         function disableImageProtection() {
             document.addEventListener('contextmenu', function (e) {
+                // Allow context menu on inputs and textareas
                  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                      return;
                  }
                 e.preventDefault();
+                console.log("Right-click prevented.");
             });
             document.addEventListener('dragstart', function (e) {
                 if (e.target.tagName === 'IMG' || (e.target.classList && e.target.classList.contains('wallpaper-img'))) {
                     e.preventDefault();
+                     console.log("Image dragging prevented.");
                 }
             });
+            // Be cautious with keyboard shortcut prevention as it can hinder accessibility
+            // document.addEventListener('keydown', function (e) {
+            //     if (e.ctrlKey && (e.key === 's' || e.key === 'u')) e.preventDefault();
+            //     if (e.key === 'F12') e.preventDefault();
+            // });
         }
-
-        // *** NEW: Share and Copy Link Functions ***
-        function generateWallpaperLink(wallpaperId) {
-            // Get the base URL without any existing hash
-            const baseUrl = window.location.href.split('#')[0];
-            return `${baseUrl}#wallpaper=${wallpaperId}`;
-        }
-
-        function copyWallpaperLink(buttonElement, wallpaperId) {
-            const uniqueLink = generateWallpaperLink(wallpaperId);
-
-            navigator.clipboard.writeText(uniqueLink).then(() => {
-                // Success feedback
-                const originalText = buttonElement.innerHTML; // Store original content
-                buttonElement.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                buttonElement.classList.add('copied'); // Optional: Add class for styling
-                buttonElement.disabled = true; // Disable briefly
-
-                // Reset button after a short delay
-                setTimeout(() => {
-                    buttonElement.innerHTML = originalText;
-                    buttonElement.classList.remove('copied');
-                    buttonElement.disabled = false;
-                }, 2000); // Reset after 2 seconds
-            }).catch(err => {
-                console.error('Failed to copy link: ', err);
-                alert('Failed to copy link. Please try copying manually.');
-            });
-        }
-
-        function shareWallpaper(wallpaperId, wallpaperTitle) {
-            const uniqueLink = generateWallpaperLink(wallpaperId);
-            const text = `Check out this amazing wallpaper: ${wallpaperTitle}`;
-
-            // Basic check if Web Share API is available (mostly mobile)
-            if (navigator.share) {
-                navigator.share({
-                    title: wallpaperTitle,
-                    text: text,
-                    url: uniqueLink,
-                })
-                .then(() => console.log('Successful share'))
-                .catch((error) => console.log('Error sharing', error));
-            } else {
-                // Fallback for desktop: Prompt with link and basic instructions
-                // You could enhance this with a custom modal showing social media icons/links
-                alert(`Share this link:\n${uniqueLink}\n\nCopy the link or share it on your favorite social media!`);
-
-                // Example social media links (could be put in a modal):
-                // const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(uniqueLink)}`;
-                // const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(uniqueLink)}&text=${encodeURIComponent(text)}`;
-                // const pinterestUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(uniqueLink)}&media=${encodeURIComponent(getWallpaperImageUrl(wallpaperId))}&description=${encodeURIComponent(text)}`;
-                // window.open(twitterUrl, '_blank', 'width=600,height=400');
-            }
-        }
-
-        // Helper function needed for Pinterest share fallback (if used)
-        function getWallpaperImageUrl(wallpaperId) {
-            const wallpaper = allWallpapers.find(w => w.id === wallpaperId);
-            // Use coverPhoto or the main image depending on what's best for sharing preview
-            return wallpaper ? (wallpaper.coverPhoto || wallpaper.image || '') : '';
-        }
-         // *** END NEW FUNCTIONS ***
-
 
     </script>
 </body>
